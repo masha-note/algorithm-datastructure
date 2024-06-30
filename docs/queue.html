@@ -63,7 +63,7 @@
         </script>
 
         <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li><a href="./queue.html" class="active"><strong>1.</strong> 队列</a></li><li><a href="./binary_tree.html"><strong>2.</strong> 二叉树</a></li></ul>
+            <ul class="chapter"><li><a href="./stack.html"><strong>1.</strong> 栈</a></li><li><a href="./queue.html" class="active"><strong>2.</strong> 队列</a></li><li><a href="./binary_tree.html"><strong>3.</strong> 二叉树</a></li></ul>
         </div>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -155,7 +155,7 @@ func (aq *ArrayQueue) Enqueue(item string) bool {
     return true
 }
 </code></pre>
-<p>从更改后的代码中可以看出，当队列的tail指针移动到数组的最右边后，如果新数据入队九江head到tail之间的数据整体搬移到数组中0到tail-head的位置。</p>
+<p>从更改后的代码中可以看出，当队列的tail指针移动到数组的最右边后，如果新数据入队就将head到tail之间的数据整体搬移到数组中0到tail-head的位置。</p>
 <p><img src="picture/queue02.PNG" style="width:500px" /></p>
 <p>平常的入队操作的时间复杂度仍然是O(1)，触发搬移的时候搬移的数据量为K(K&lt;=n)，最差时间复杂度为O(n)，均摊到平常入队操作中计得平均得时间复杂度为O(1)。</p>
 <pre><code class="language-GO">type LinkQueue struct {
@@ -232,10 +232,18 @@ func (cq *CycleQueue) Dequeue() (string, bool) {
 <p>这种基于阻塞队列实现的“生产者-消费者模型”可以有效地协调生产和消费的速度。当生产者生产数据的速度过快，消费者来不及消费时，存储数据的队列很快就满。这个时候，生产者就阻塞等待，直到消费者消费了数据，生产者才会被唤醒继续生产。</p>
 <p>而且不仅如此，基于阻塞队列，还可以通过协调生产者和消费者的个数，来提高数据的处理效率。比如可以多配置几个消费者来应对一个生产者。</p>
 <p>线程安全的队列称为<strong>并发队列</strong>。最简单直接的实现方法是直接在入队和出队的方法上加锁，但是锁粒度大并发度会比较低，同一时刻仅允许一个存或者取操作。实际上，基于数组的循环队列，利用<code>CAS</code>原子操作可以实现非常高效的并发队列。这也是循环队列比链式队列应用更加广泛的原因。</p>
+<a class="header" href="./queue.html#必知必会" id="必知必会"><h2>必知必会</h2></a>
+<p>用数组实现一个顺序队列</p>
+<p>用链表实现一个链式队列</p>
+<p>实现一个循环队列</p>
 
                 </div>
 
                 <!-- Mobile navigation buttons -->
+                
+                    <a rel="prev" href="./stack.html" class="mobile-nav-chapters previous" title="Previous chapter">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
                 
 
                 
@@ -246,6 +254,10 @@ func (cq *CycleQueue) Dequeue() (string, bool) {
 
             </div>
 
+            
+                <a href="./stack.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
             
 
             

@@ -63,7 +63,7 @@
         </script>
 
         <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li><a href="./queue.html"><strong>1.</strong> 队列</a></li><li><a href="./binary_tree.html"><strong>2.</strong> 二叉树</a></li></ul>
+            <ul class="chapter"><li><a href="./stack.html"><strong>1.</strong> 栈</a></li><li><a href="./queue.html"><strong>2.</strong> 队列</a></li><li><a href="./binary_tree.html"><strong>3.</strong> 二叉树</a></li></ul>
         </div>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -86,7 +86,81 @@
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="print.html#队列" id="队列"><h1>队列</h1></a>
+                    <a class="header" href="print.html#栈" id="栈"><h1>栈</h1></a>
+<p>后进者先出，先进者后出，这就是典型的“栈”结构。</p>
+<p>从栈的操作特性上来看，栈是一种“操作受限”的线性表，只允许在一端插入和删除数据。</p>
+<a class="header" href="print.html#如何实现一个栈" id="如何实现一个栈"><h2>如何实现一个“栈”</h2></a>
+<p>栈可以用数组实现，也可以用链表实现。用数组实现的叫<strong>顺序栈</strong>，用链表实现的<strong>链式栈</strong>。</p>
+<pre><code class="language-GO">// 基于数组实现的顺序栈
+type ArrayStack struct {
+    items []string // 数组
+    count int      // 栈中元素个数
+    n     int      // 栈的大小
+}
+
+func NewArrayStack(capacity int) *ArrayStack {
+    return &amp;ArrayStack{
+        items: make([]string, capacity),
+        count: 0,
+        n:     capacity,
+    }
+}
+
+// 入栈
+func (s *ArrayStack) Push(item string) bool {
+    // 数组空间不够，入栈失败
+    if s.count &gt;= s.n {
+        return false
+    }
+    // 将item放到下标为count的位置，并且count加一
+    s.items[s.count] = item
+    s.count++
+    return true
+}
+
+// 出栈
+func (s *ArrayStack) Pop() string {
+    // 栈为空
+    if s.count == 0 {
+        return &quot;&quot;
+    }
+    // 返回下标为count-1的数组元素，并且栈中元素个数count减一
+    s.count--
+    return s.items[s.count]
+}
+</code></pre>
+<p>不管是顺序栈还是链式栈，存储数据只需要大小为n的存储空间。在入栈和出栈过程中，只需要一两个临时变量存储空间，所以空间复杂度是O(1)。不管是顺序栈还是链式栈，入栈、出栈只涉及栈顶个别数据的操作，所以时间复杂度都是O(1)。</p>
+<a class="header" href="print.html#栈在函数调用中的应用" id="栈在函数调用中的应用"><h2>栈在函数调用中的应用</h2></a>
+<p>操作系统给每个线程分配一块独立的内存空间，这块内存被组织成“栈”这种结构，用来存储函数调用时的临时变量。每进入一个函数，就会将临时变量作为一个栈帧入栈，当被调用函数执行完成，返回之后，将这个函数对应的栈帧出栈。</p>
+<pre><code class="language-c">int main() {
+    int a = 1;
+    int ret = 0;
+    int res = 0;
+    ret = add(3, 5);
+    res = a + ret;
+    printf(&quot;%d\n&quot;, res);
+    return 0;
+}
+
+int add(int x, int y) {
+    int sum = 0;
+    sum = x + y;
+    return sum;
+}
+</code></pre>
+<p>从代码中看出，main()函数调用了add()函数获取计算结果并且与临时变量a相加，最后打印res的值。</p>
+<p><img src="picture/stack01.PNG" style="width:500px"/></p>
+<a class="header" href="print.html#栈在表达式求值中的应用" id="栈在表达式求值中的应用"><h2>栈在表达式求值中的应用</h2></a>
+<p>编译器利用两个栈来实现表达式求值。其中一个栈保存操作数，另一个保存运算符。从左向右遍历表达式，遇到数字时压入栈中；遇到运算符就与运算符栈的栈顶元素进行比较。如果比运算符栈顶元素的优先级高，将当前运算符压入栈中，否则取出栈顶运算符，从操作数栈的栈顶取2个操作数进行计算，再把计算完的结果压入操作数栈，之后继续下一轮比较。</p>
+<p><img src="picture/stack02.PNG" style="width:600px"/></p>
+<a class="header" href="print.html#栈在括号匹配中的应用" id="栈在括号匹配中的应用"><h2>栈在括号匹配中的应用</h2></a>
+<p>假设表达式中只包含三种括号，圆括号<code>()</code>、方括号<code>[]</code>和花括号<code>{}</code>，并且它们可以任意嵌套。</p>
+<p>用一个栈来存储未匹配的左括号，从左到右依次扫描字符串。当扫描到左括号时将其压入栈中；当扫描到右括号时，从栈顶取出一个左括号。如果能够匹配，则继续下一轮压栈匹配，否则表示匹配不了，表达式非法。</p>
+<a class="header" href="print.html#必知必会" id="必知必会"><h2>必知必会</h2></a>
+<p>用数组实现一个顺序栈</p>
+<p>用链表实现一个链式栈</p>
+<p>模拟浏览器的前进、后退功能</p>
+<a class="header" href="print.html#队列" id="队列"><h1>队列</h1></a>
 <p>队列跟栈非常相似，是一种操作受限的线性表数据结构，支持的操作也有限，最基本的操作也是两个：<strong>入队(enqueue)</strong>，放一个数据到队列尾部；<strong>出队(dequeue)</strong>，从队列头部取一个元素。</p>
 <a class="header" href="print.html#顺序队列和链式队列" id="顺序队列和链式队列"><h2>顺序队列和链式队列</h2></a>
 <p>用数组实现的队列叫<strong>顺序队列</strong>，用链表实现的<strong>链式队列</strong>。</p>
@@ -155,7 +229,7 @@ func (aq *ArrayQueue) Enqueue(item string) bool {
     return true
 }
 </code></pre>
-<p>从更改后的代码中可以看出，当队列的tail指针移动到数组的最右边后，如果新数据入队九江head到tail之间的数据整体搬移到数组中0到tail-head的位置。</p>
+<p>从更改后的代码中可以看出，当队列的tail指针移动到数组的最右边后，如果新数据入队就将head到tail之间的数据整体搬移到数组中0到tail-head的位置。</p>
 <p><img src="picture/queue02.PNG" style="width:500px" /></p>
 <p>平常的入队操作的时间复杂度仍然是O(1)，触发搬移的时候搬移的数据量为K(K&lt;=n)，最差时间复杂度为O(n)，均摊到平常入队操作中计得平均得时间复杂度为O(1)。</p>
 <pre><code class="language-GO">type LinkQueue struct {
@@ -232,6 +306,10 @@ func (cq *CycleQueue) Dequeue() (string, bool) {
 <p>这种基于阻塞队列实现的“生产者-消费者模型”可以有效地协调生产和消费的速度。当生产者生产数据的速度过快，消费者来不及消费时，存储数据的队列很快就满。这个时候，生产者就阻塞等待，直到消费者消费了数据，生产者才会被唤醒继续生产。</p>
 <p>而且不仅如此，基于阻塞队列，还可以通过协调生产者和消费者的个数，来提高数据的处理效率。比如可以多配置几个消费者来应对一个生产者。</p>
 <p>线程安全的队列称为<strong>并发队列</strong>。最简单直接的实现方法是直接在入队和出队的方法上加锁，但是锁粒度大并发度会比较低，同一时刻仅允许一个存或者取操作。实际上，基于数组的循环队列，利用<code>CAS</code>原子操作可以实现非常高效的并发队列。这也是循环队列比链式队列应用更加广泛的原因。</p>
+<a class="header" href="print.html#必知必会-1" id="必知必会-1"><h2>必知必会</h2></a>
+<p>用数组实现一个顺序队列</p>
+<p>用链表实现一个链式队列</p>
+<p>实现一个循环队列</p>
 <a class="header" href="print.html#二叉树" id="二叉树"><h1>二叉树</h1></a>
 <p>树由一系列结点连接而成，连接相邻结点的叫做父子关系。</p>
 <p><img src="picture/IMG_0209.jpg" style="width:700px" /></p>
@@ -280,6 +358,10 @@ func (cq *CycleQueue) Dequeue() (string, bool) {
 <p>如果要删除的结点右两个结点。找到右子树中的最小结点，替换到要删除的结点上，然后再删除那个最小结点(他可能有右子结点)。</p>
 <a class="header" href="print.html#关于重复数据" id="关于重复数据"><h3>关于重复数据</h3></a>
 <p>一般将重复的数据放到右子树中，查找数据的时候要一直查找到叶子结点。删除结点的时候也要依次删除。</p>
+<a class="header" href="print.html#必知必会-2" id="必知必会-2"><h2>必知必会</h2></a>
+<p>实现一个二叉查找树，并且支持插入、删除、查找操作</p>
+<p>实现查找二叉查找树中某个节点的后继、前驱节点</p>
+<p>实现二叉树前、中、后序以及按层遍历</p>
 
                 </div>
 
