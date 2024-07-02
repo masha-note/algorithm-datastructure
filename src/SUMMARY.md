@@ -1,5 +1,7 @@
 # Summary
 
+- [数组](./array.md)
+
 - [栈](./stack.md)
 
 - [队列](./queue.md)
