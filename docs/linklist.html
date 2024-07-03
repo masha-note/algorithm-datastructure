@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>链表 - 算法与数据结构</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./array.html"><strong>1.</strong> 数组</a></li><li><a href="./linklist.html" class="active"><strong>2.</strong> 链表</a></li><li><a href="./stack.html"><strong>3.</strong> 栈</a></li><li><a href="./queue.html"><strong>4.</strong> 队列</a></li><li><a href="./binary_tree.html"><strong>5.</strong> 二叉树</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title">算法与数据结构</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./linklist.html#链表" id="链表"><h1>链表</h1></a>
+<p>数组需要一块连续的内存空间来存储，对内存要求比较高。而链表恰恰相反，它并不需要一块连续的内存空间，它通过“指针”将一组零散的内存块串联起来使用。</p>
+<p>链表中零散的内存块称为节点，为了将所有的节点串联起来，每个链表的节点除了存储数据之外还需要记录链上的下一个节点的地址。这个记录下个节点地址的指针称为<strong>后继指针next</strong>。</p>
+<p>链表中的第一个节点称为<strong>头节点</strong>，最后一个节点叫做<strong>尾节点</strong>。其中，头节点用来记录链表的基地址，可以由此遍历得到整条链表。而尾节点特殊的地方在于指针不是指向下一个节点，而是指向一个<strong>空地址NULL</strong>，表示这是链表上的最后一个节点。</p>
+<a class="header" href="./linklist.html#删除和插入" id="删除和插入"><h2>删除和插入</h2></a>
+<p>与数组一样，链表也支持数据的查找、插入和删除操作。</p>
+<p>在进行数组的插入、删除操作时，为了保持内存数据的连续性，需要做大量的数据搬移，所以时间复杂度时<code>O(n)</code>。而在链表中插入或删除一个数据并不需要保持内存的连续性和搬移节点，因为链表的存储空间本身就不是连续的。针对链表的插入和删除操作，只需要考虑相邻节点的指针改变，所以对应的时间复杂度时<code>O(1)</code>。</p>
+<p><img src="picture/linklist01.png" style="width:500px" /></p>
+<a class="header" href="./linklist.html#单链表" id="单链表"><h2>单链表</h2></a>
+<p>链表的删除和插入操作时间复杂度是<code>O(1)</code>。但代价是对于数据的随机访问，链表没有数组那么高效。因为链表的数据并非连续存储的，所以无法像数组那样<strong>根据首地址和下标通过寻址公式直接计算出对应的内存地址</strong>，而是需要根据指针一个节点一个节点地依次遍历直到找到相应的节点，时间复杂度为<code>O(n)</code>。</p>
+<a class="header" href="./linklist.html#循环链表" id="循环链表"><h2>循环链表</h2></a>
+<p>循环链表是一种特殊的单链表。循环链表跟单链表的区别在于循环链表的尾节点指向头节点而不是指向NULL。</p>
+<p>和单链表相比，循环链表的优点是从链尾到链头比较方便。当要处理的数据具有环型结构特点时，就特别适合采用循环链表。比如著名的<a href="https://zh.wikipedia.org/zh-hans/%E7%BA%A6%E7%91%9F%E5%A4%AB%E6%96%AF%E9%97%AE%E9%A2%98">约瑟夫问题</a>。尽管用单链表也可以实现，但是用循环链表实现的话代码会简洁很多。</p>
+<a class="header" href="./linklist.html#双向链表" id="双向链表"><h2>双向链表</h2></a>
+<p>双向链表支持两个方向，每个节点不止有一个后继指针next指向后面的节点，还有一个前驱指针prev指向前面的节点。双向链表需要额外的两个空间来存储后继节点和前驱节点的地址。所以，如果存储同样多的数据，双向链表要比单链表占用更多的内存空间。但支持双向遍历也带来了更高的操作灵活性，使得双向链表可以在<code>O(1)</code>时间复杂度的情况下找到前驱节点。正式这样的特点，也使双向链表在某些情况下的插入、删除等操作都要比单链表更加高效。</p>
+<a class="header" href="./linklist.html#数组与链表的对比" id="数组与链表的对比"><h2>数组与链表的对比</h2></a>
+<p><img src="picture/linklist02.png" style="width:500px" /></p>
+<a class="header" href="./linklist.html#必知必会" id="必知必会"><h2>必知必会</h2></a>
+<p>实现单链表、循环链表、双向链表，支持增删操作</p>
+<p>实现单链表反转</p>
+<p>实现两个有序的链表合并为一个有序链表</p>
+<p>实现求链表的中间节点</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a rel="prev" href="./array.html" class="mobile-nav-chapters previous" title="Previous chapter">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="./stack.html" class="mobile-nav-chapters next" title="Next chapter">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./array.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./stack.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>
