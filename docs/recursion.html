@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>递归 - 算法与数据结构</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./array.html"><strong>1.</strong> 数组</a></li><li><a href="./linklist.html"><strong>2.</strong> 链表</a></li><li><a href="./stack.html"><strong>3.</strong> 栈</a></li><li><a href="./queue.html"><strong>4.</strong> 队列</a></li><li><a href="./recursion.html" class="active"><strong>5.</strong> 递归</a></li><li><a href="./binary_tree.html"><strong>6.</strong> 二叉树</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title">算法与数据结构</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./recursion.html#递归" id="递归"><h1>递归</h1></a>
+<p>可以用递归的解决的问题需同时满足以下三个条件：</p>
+<ol>
+<li>一个问题的解可以分解为几个子问题的解</li>
+<li>这个问题与分解之后的子问题，除了数据规模不同，求解思路完全相同，求解思路完全相同</li>
+<li>存在递归终止条件</li>
+</ol>
+<a class="header" href="./recursion.html#递归代码的编写" id="递归代码的编写"><h2>递归代码的编写</h2></a>
+<p>递归最关键的是<strong>写出递归公式，找到终止条件</strong>，然后将公式转换为代码。</p>
+<p>假设有n个台阶，每次可跨过1个或者2个台阶，这n个台阶有多少种走法？如果有7个台阶，可以2，2，2，1这样子走完，也可以1，2，1，1，2这样子走完。实际上，可以根据第一部的走法把所有走法分为两类，第一类是第一步走了1个台阶，另一类是第一步走了2个台阶。多以n个台阶的走法就等于<code>先走1阶后，n-1个台阶的走法</code>加上<code>先走2阶后，n-2个台阶的走法</code>。公式表示为<code>f(n) = f(n-1)+f(n-2)</code>。</p>
+<p>当只有一个台阶时，我们不需要继续递归，就只有一种走法。但是<code>f(1)=1</code>并不能作为唯一的终止条件，因为<code>f(2)=f(1)+f(0)</code>无法求解。所以终止条件为<code>f(1)=1</code>和<code>f(2)=2</code>。</p>
+<a class="header" href="./recursion.html#堆栈溢出" id="堆栈溢出"><h2>堆栈溢出</h2></a>
+<p>每个函数的调用都会将临时变量封装成栈帧压入内存栈，等函数执行完成返回才出栈。系统栈或者虚拟机栈空间一般都不大。如果递归求解的数据规模很大，调用层次很深，一直压入栈就会有堆栈溢出的风险。</p>
+<p>可以通过限制递归调用的最大深度来一定程度上解决这个问题，因为最大允许的递归深度跟当前线程剩余的栈空间大小有关，事先无法计算。而实时计算的代码过于复杂，会影响代码的可读性。所以如果最大深度比较小，如10、50，就可以用这种方法，否则这种方法并不是很实用。</p>
+<a class="header" href="./recursion.html#重复计算" id="重复计算"><h2>重复计算</h2></a>
+<p>在<code>f(n)=f(n-1)+f(n-2)</code>中，<code>f(5)=f(4)+f(3)</code>，<code>f(4)=f(3)+f(2)</code>。可以发现<code>f(3)</code>会被重复计算很多次。</p>
+<p><img src="picture/recursion01.jpg" style="width:500px" /></p>
+<p>为了避免这个问题，可以通过一个数据结构（比如散列表）来保存已经求结过的<code>f(k)</code>。</p>
+<a class="header" href="./recursion.html#其他问题" id="其他问题"><h2>其他问题</h2></a>
+<p>除了重复计算和堆栈溢出，递归还有很对其他问题。</p>
+<p>在时间复杂度上，递归代码里多了很多函数调用。当这些函数调用的数量较大时，就会累计出可观的时间成本。</p>
+<p>在空间复杂度上，因为递归调用一次就会在内存栈中保存一次现场数据，所以在分析递归代码空间复杂度时需要额外考虑这部分的开销。</p>
+<a class="header" href="./recursion.html#必知必会" id="必知必会"><h2>必知必会</h2></a>
+<p>实现斐波那契数列求值<code>f(n)=f(n-1)+f(n-2)</code></p>
+<p>实现求阶乘<code>n!</code></p>
+<p>实现一组数据集合的全排列</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a rel="prev" href="./queue.html" class="mobile-nav-chapters previous" title="Previous chapter">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="./binary_tree.html" class="mobile-nav-chapters next" title="Next chapter">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./queue.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./binary_tree.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

@@ -8,5 +8,7 @@
 
 - [队列](./queue.md)
 
+- [递归](./recursion.md)
+
 - [二叉树](./binary_tree.md)
 
