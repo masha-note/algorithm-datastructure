@@ -1,0 +1,394 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>排序 - 算法与数据结构</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./array.html"><strong>1.</strong> 数组</a></li><li><a href="./linklist.html"><strong>2.</strong> 链表</a></li><li><a href="./stack.html"><strong>3.</strong> 栈</a></li><li><a href="./queue.html"><strong>4.</strong> 队列</a></li><li><a href="./recursion.html"><strong>5.</strong> 递归</a></li><li><a href="./sort.html" class="active"><strong>6.</strong> 排序</a></li><li><a href="./binary_tree.html"><strong>7.</strong> 二叉树</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title">算法与数据结构</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./sort.html#排序" id="排序"><h1>排序</h1></a>
+<p>按照时间复杂度，常用的算法可以简单分为以下三类。</p>
+<p><img src="picture/sort01.PNG" style="width:500px"/></p>
+<a class="header" href="./sort.html#分析排序算法" id="分析排序算法"><h2>分析排序算法</h2></a>
+<a class="header" href="./sort.html#排序算法的执行效率" id="排序算法的执行效率"><h3>排序算法的执行效率</h3></a>
+<ol>
+<li>
+<p>最好的情况、最坏情况、平均情况时间复杂度</p>
+<p>在分析时间复杂度时，要分别给出<code>最好情况</code>、<code>最坏情况</code>、<code>平均状况</code>下的时间复杂度以及这些时间复杂度下要排序的数据是什么样的。</p>
+<p>之所以要分析这些指标，一是为了在各算法之间进行对比取舍，二是为了要得出算法在在不同数据下的性能表现。</p>
+</li>
+<li>
+<p>时间复杂度的系数、常数、低阶</p>
+<p>时间复杂度反映的是数据规模n很大的时候的一个增长趋势，所以表示的时候会忽略系数、常数、低阶。但是实际的软件开发中，排序的数据很可能是10个、100个、1000个这样规模很小的数据，所以在对同一阶时间复杂度的排序算法性能对比的时候就要把系数、常数、低阶也考虑进来。</p>
+</li>
+<li>
+<p>比较次数和交换（或移动）次数</p>
+<p>基于比较的排序算法的执行过程会涉及<code>比较大小</code>和<code>元素交换或移动</code>两种操作。在分析执行效率的时候应该把比较次数和交换（移动）次数也考虑进去。</p>
+</li>
+</ol>
+<a class="header" href="./sort.html#内存消耗" id="内存消耗"><h3>内存消耗</h3></a>
+<p>排序算法的空间消耗也可以用空间复杂度来衡量。不过针对排序算法，还有一个<code>原地排序</code>的新概念。原地排序的算法，就是特指空间复杂度是<code>O(1)</code>的排序算法。</p>
+<a class="header" href="./sort.html#稳定性" id="稳定性"><h3>稳定性</h3></a>
+<p>仅仅用执行效率和内存消耗不足以衡量排序算法的好坏。还有一个重要指标，<code>稳定性</code>。这个概念是说，如果待排序的序列中存在值相等的元素，经过排序后，相等元素之间原有的先后顺序是否发生变化，变化了的算法是不稳定的，否则是稳定的。</p>
+<a class="header" href="./sort.html#冒泡排序" id="冒泡排序"><h2>冒泡排序</h2></a>
+<p>冒泡排序只会操作相邻的两个数据。每次冒泡操作都会对相邻的两个元素进行比较，看是否满足大小关系要求。如果不满足就让它们互换。一次冒泡会让至少一个元素移动到它应该在的位置，重复n次就完成了数据的排序工作。</p>
+<p><img src="picture/sort02.PNG" style="width:500px"/></p>
+<p>可以看出，经过1次冒泡，元素<code>6</code>已经存储在正确的位置上了。要想完成所有数据的排序，只要进行6次这样的冒泡操作就行了。</p>
+<p><img src="picture/sort03.PNG" style="width:500px"/></p>
+<p>当某次冒泡操作已经没有数据交换时，说明已经达到完全有序，不再需要进行后续的冒泡。</p>
+<p><img src="picture/sort04.PNG" style="width:500px"/></p>
+<p>优化后的代码如下：</p>
+<pre><code class="language-Golang">func bubbleSort(nums []int, n int){
+    if n &lt;= 1 {
+        return
+    }
+
+    for i:=0; i &lt; n; i++ {
+        flag := false
+        for j:=0; j &lt; n-i-1; j++ {
+            if nums[j] &gt; nums[j+1] {
+                tmp := nums[j]
+                nums[j] = nums[j+1]
+                nums[j+1] = tmp
+                flag = true
+            }
+        }
+        if !flag {
+            break
+        }
+    }
+}
+</code></pre>
+<a class="header" href="./sort.html#算法分析" id="算法分析"><h3>算法分析</h3></a>
+<ol>
+<li>
+<p>冒泡排序是原地排序算法吗？</p>
+<p>冒泡过程只涉及相邻数据的交换操作，只需要常量级的临时空间，所以空间复杂度为<code>O(1)</code>，是一个原地排序算法。</p>
+</li>
+<li>
+<p>冒泡排序是稳定的排序算法吗？</p>
+<p>在冒泡排序中，只有交换才可以改变两个元素的前后顺序。为了保证冒泡排序的的稳定性，当有相邻两个相等大小的元素时不做交换，所以冒泡排序是稳定的。</p>
+</li>
+<li>
+<p>冒泡排序的时间复杂度是多少？</p>
+<p>在数据有序的情况下只需要一次遍历，时间复杂度为<code>O(n)</code>。最坏情况下数据倒序排列，需要进行n次冒泡，时间复杂度为<code>O(n^2)</code>。</p>
+<p>平均时间复杂度，原文的分析很长很多，这里简要概括。通过数据的<code>有序度</code>和<code>逆序度</code>来分析。有序度指数组中具有有序关系的元素的对的个数，逆序度则相反。一个完全有序的数组任意两个元素都是有序的，数组在<code>满有序度</code>的状态。</p>
+<p>排序的过程就是增加有序度减少逆序度的过程。冒泡排序每次交换会使逆序度减1，有序度加1，因此<code>交换次数=逆序度</code>。取中间值逆序度为<code>n*(n-1)/4</code>，计算得出平均的时间复杂度也是<code>O(n^2)</code>。</p>
+</li>
+</ol>
+<a class="header" href="./sort.html#插入排序" id="插入排序"><h2>插入排序</h2></a>
+<p>将数组中的数据分为两个区间，已排序区间和未排序区间。初始已排序区间只有一个元素，就是数组的第一个元素。插入算法的核心思想是取未排序区间中的元素和已排序区间中的元素一一对比，插入到合适的位置保证已排序区间内的元素依旧有序。重复此过程直到未排序区间为空。</p>
+<p><img src="picture/sort05.PNG" style="width:500px"/></p>
+<p>插入排序也包含元素比较和移动两个操作。对于不同的查找插入点方法（从头到尾、从尾到头），元素的比较次数是有区别的，但移动次数总是固定的，也等于逆序度。如图中数组<code>满有序度=n*(n-1)/2=15</code>，初始有序度为5，因此逆序度为<code>15-5=10</code>，代码实现如下。</p>
+<pre><code class="language-Golang">func insertionSort(nums []int, n int){
+    if n &lt;= 1 {
+        return
+    }
+
+    for i:=1; i &lt; n; i++ {
+        value := nums[i]
+        j := i - 1
+        for ; j &gt;= 0; j-- {
+            if nums[j] &gt; value {
+                nums[j+1] = nums[j]
+            } else {
+                break
+            }
+        }
+        nums[j+1] = value
+    }
+}
+</code></pre>
+<a class="header" href="./sort.html#算法分析-1" id="算法分析-1"><h3>算法分析</h3></a>
+<ol>
+<li>
+<p>插入排序是原地排序算法吗？</p>
+<p>插入排序算法并不需要额外的存储空间，所以空间复杂度是<code>O(1)</code>，是原地排序算法。</p>
+</li>
+<li>
+<p>插入排序是稳定的排序算法吗？</p>
+<p>在插入的时候，我们可以将后出现的元素插入到前面等值元素的后面来保证稳定性。所以插入排序是稳定的。</p>
+</li>
+<li>
+<p>插入排序的时间复杂度是多少？</p>
+<p>最好情况下数组有序，插入排序只需从头到尾遍历一次数组，时间复杂度为<code>O(n)</code>。最差情况下数组是倒序的，每次插入都相当于在数组的第一个位置插入一个数据，需要移动整个已排序区间，所以时间复杂度是<code>O(n^2)</code>。</p>
+<p>对于插入排序来说，每次插入操作都相当于在数组中插入一个数据，循环执行n次。而数组的插入操作平均时间复杂度为<code>O(n)</code>，所以插入排序平均时间复杂度为<code>O(n^2)</code>。</p>
+</li>
+<li>
+<p>为什么插入排序相比冒泡排序更受欢迎？</p>
+<p>前面的分析提到，冒泡排序的交换次数和插入排序的移动次数是固定的，等于数组的原始逆序度。但是从代码实现上看，冒泡排序需要3个赋值操作而插入排序只需要1个。</p>
+<pre><code class="language-Golang">// 冒泡排序中的交换
+if a[j] &gt; a[j+1] {
+    tmp := a[j]
+    a[j] = a[j+1]
+    a[j+1] = tmp
+}
+
+// 插入排序中的移动
+if a[j] &gt; value {
+    a[j+1] = a[j]
+} else {
+    break
+}
+</code></pre>
+</li>
+</ol>
+<a class="header" href="./sort.html#选择排序" id="选择排序"><h2>选择排序</h2></a>
+<p>选择排序的思路和插入排序类似，也分为已排序区间和未排序区间。但选择排序每次会从未排序区间中找到最小的元素放到已排序区间的末尾。</p>
+<p><img src="picture/sort06.PNG" style="width:500px"/></p>
+<a class="header" href="./sort.html#算法分析-2" id="算法分析-2"><h3>算法分析</h3></a>
+<ol>
+<li>
+<p>选择排序是原地排序算法吗？</p>
+<p>选择排序算法并不需要额外的存储空间，所以空间复杂度是<code>O(1)</code>，是原地排序算法。</p>
+</li>
+<li>
+<p>选择排序是稳定的排序算法吗？</p>
+<p>选择排序在数据交换中会破坏稳定性。如<code>5，8，5，2，9</code>这组数据，第一次交换<code>2</code>和<code>5</code>的时候会破坏两个<code>5</code>之间的前后关系。所以选择排序是不稳定的，相比前两者就逊色了不少。</p>
+</li>
+<li>
+<p>选择排序的时间复杂度是多少？</p>
+<p>任何数据分布情况下，选择排序都需要依次遍历<code>n</code>、<code>n-1</code>、<code>n-2</code>、...、<code>1</code>的数组元素，时间复杂度均为<code>O(n^2)</code>。</p>
+</li>
+</ol>
+<a class="header" href="./sort.html#归并排序" id="归并排序"><h2>归并排序</h2></a>
+<p>归并排序使用的是<code>分治思想</code>。分治将一个大问题分解成子问题，子问题解决了大问题也就解决了。</p>
+<p>归并排序将数组分为前后两部分，分别对前后两部分进行排序，然后再合并排序好的两部分从而最终达成整个数组的排序。</p>
+<p><img src="picture/sort07.PNG" style="width:500px"/></p>
+<p>归并一般用递归实现，递归的递推公式和终止条件如下。</p>
+<pre><code>递推公式：
+merge_sort(p...r) = merge(merge_sort(p...q), merge_sort(q+1...r))
+
+终止条件：
+q &gt;= r 不用再继续分解
+</code></pre>
+<p>针对每一个区间，使用归并排序先将两个区间排序然后再合并。而当区间为空或只有1个数据（q &gt;= r）的时候，此时的区间必定是有序的，可以返回上层进行合并，不再继续分解。</p>
+<a class="header" href="./sort.html#算法分析-3" id="算法分析-3"><h3>算法分析</h3></a>
+<ol>
+<li>
+<p>归并排序是稳定的排序算法吗？</p>
+<p>归并拍哦徐是否稳定取决于合并环节的实现。在合并过程中，对于两个相等的元素，我们可以将顺序靠前的区间中的那个元素先合并来保证算法的稳定性。因此，归并排序是稳定的。</p>
+</li>
+<li>
+<p>归并排序的时间复杂度是多少？</p>
+<p>由于归并采用了递归实现，我们可以将其时间消耗表示为<code>T(a) = T(b) + T(c) + K</code>。其中K为合并两个子问题所消耗的时间。</p>
+<p>假设对n个元素进行归并排序，需要的时间为<code>T(n)</code>。那么归并排序的时间复杂度计算公式如下</p>
+<pre><code>T(1) = C;               n=1时区间有序，只耗费常数级的时间
+T(n) = 2*T(n/2) + n;    n&gt;1，合并需要做一次遍历因此需要加n
+
+T(n/2) = 2*T(n/4) + n/2;
+T(n) = 2*(2*T(n/4) + n/2) + n = (2^2)*T(n/4)+ 2*n;
+
+T(n/4) = 2*T(n/8) + n/4;
+T(n) = (2^2)*(2*T(n/8) + n/4)+ 2*n = (2^3)*T(n/8)+ 3*n;
+
+...
+T(n) = (2^k)*T(n/(2^k))+ k*n
+其中 k = logn
+T(n) = n*T(1)+ logn*n = C*n + n*logn
+</code></pre>
+<p>此外，归并排序还与数组的数据分布无关。因此归并排序的最好、最坏、平均时间复杂度均为<code>O(n*logn)</code>。</p>
+</li>
+<li>
+<p>归并排序是原地排序算法吗？</p>
+<p>不是，因为每次合并的时候都需要开辟等同于那个区间大小的临时空间来进行合并操作。而最大的区间等同于整个数组本身，所以归并排序并不是原地排序算法，它的空间复杂度是<code>O(n)</code>。</p>
+</li>
+</ol>
+<a class="header" href="./sort.html#快速排序" id="快速排序"><h2>快速排序</h2></a>
+<p>快速排序使用的也是分治的思想。对于数组中用下标<code>l</code>和<code>r</code>圈出的待排序区间，从中选出一个数作为分区点（pivot）。然后遍历这个区间，将小于pivot的元素放到左边，将大于等于pivot的数放到右边，将pivot放在中间。循环往复直到数组完成排序。</p>
+<p>同样，快排也是用递归实现的，它的递推公式和终止条件如下。</p>
+<pre><code>递推公式:
+quick_sort(l...r) = quick_sort(l...p-1) + quick_sort(p+1...r)
+
+终止条件:
+l &gt;= r
+</code></pre>
+<p><code>l &gt;= r</code>时区间为空或只有一个元素，这时候这个区间必定是已经完成排序的，不需要在进行递归。归并排序平均地分割两个区间，然后用merge合并。而快速排序则用partition函数按pivot分割成两个区间然后递归排序，不需要合并。</p>
+<a class="header" href="./sort.html#算法分析-4" id="算法分析-4"><h3>算法分析</h3></a>
+<ol>
+<li>
+<p>与归并排序的区别</p>
+<p><img src="picture/sort08.PNG" style="width:500px"/></p>
+<p>由上图可以发现，归并排序<strong>由下到上</strong>先处理子问题然后再合并。而快速排序<strong>由上到下</strong>先分区，再处理子问题，两者恰好相反。</p>
+</li>
+<li>
+<p>快速排序是原地排序算法吗？</p>
+<p>快速排序是否是原地排序算法取决于partitiion函数如何完成分割。如果partition函数申请了额外的空间用于保存左右两个区间，那么其空间复杂度为O(n)。但实际上partition一般采取数据交换的方式来完成原地分区。其策略如图。</p>
+<p><img src="picture/sort09.PNG" style="width:500px"/></p>
+<p>这时候，快速排序所需的额外空间为为常数级，空间复杂度是<code>O(n)</code>，是一个原地排序算法。</p>
+</li>
+<li>
+<p>快速排序的时间复杂度是多少？</p>
+<p>在理想的数据分布情况下，快速排序能将区间一分为二，此时的时间复杂度等于归并排序的时间复杂度，为<code>O(n*logn)</code>。</p>
+<p>在极端情况下，数据分区后只存在于pivot的其中一端，这个时候时间复杂度将退化为<code>O(n^2)</code>。</p>
+<p>平均时间复杂度为<code>O(n*logn)</code>，过于复杂，后续补充。</p>
+</li>
+<li>
+<p>快速排序是稳定的排序算法吗？</p>
+<p>同选择排序一样，快速排序在交换数据后会破坏数据原有的顺序，因此快速排序是不稳定的。</p>
+</li>
+</ol>
+<a class="header" href="./sort.html#线性排序" id="线性排序"><h2>线性排序</h2></a>
+<p>线性排序指的是那些排序时间复杂度为<code>O(n)</code>的排序算法。之所以能做到线性的时间复杂度，主要原因是这些算法不是基于比较的排序算法，都不涉及元素之间的比较操作。</p>
+<a class="header" href="./sort.html#桶排序" id="桶排序"><h3>桶排序</h3></a>
+<p>顾名思义，桶排序会用到“桶”，核心思想是将要排序的数据分到几个有序的桶里，每个桶里的数据再单独进行排序。桶内排完序之后，再把每个桶里的数据按照顺序依次取出，组成的序列就是有序的了。</p>
+<p><img src="picture/sort10.PNG" style="width:500px"/></p>
+<p>如果要排序的数据有<code>n</code>个，我们把它们均匀地划分到<code>m</code>个桶内，每个桶里就有<code>k=n/m</code>个元素。每个桶里使用快速排序，时间复杂度为<code>O(k*logk)</code>。<code>m</code>个桶排序的时间复杂度就是<code>O(m*k*logk)</code>，因为<code>k=n/m</code>，所以整个桶排序的时间复杂度就是<code>O(n*log(n/m))</code>。当桶的个数<code>m</code>接近数据个数<code>n</code>时，<code>log(n/m)</code>就是一个非常小的常量，这个时候桶排序的时间复杂度接近<code>O(n)</code>。</p>
+<p>也就是说只有当数据分布均匀（每个桶里的数据个数差不多）且桶的个数接近数据个数（每个桶内的数据不多，最好接近2个）的时候时间复杂度才接近<code>O(n)</code>。桶间数据数量差距越大，桶内数据相比2差距越多，时间复杂度差<code>O(n)</code>越高。</p>
+<p><strong>桶排序比较适合在外部排序中</strong>。所谓的外部排序就是数据存储在外部磁盘中，数据量比较大，内存有限，无法将数据全部加载到内存中。</p>
+<p>比如说有10GB的订单数据，我们希望按订单金额进行排序，但是我们的内存有限，只有几百MB，没办法一次性把10GB的数据都加载到内存中。这个时候就可以借助桶排序的处理思想来解决这个问题。</p>
+<p>我们可以先扫描一遍文件，看订单金额所处的数据范围。假设经过扫描之后我们得到，订单金额最小1元，最大是10万元。我们将所有订单根据金额划分到100个桶里，第一个桶我们存储金额在1元到1000元之内的订单，第二桶存储金额在1001元到2000元之内的订单，依次类推。每一个桶对应一个文件，并且按照金额范围的大小顺序编号命名(00，01，02...99)。</p>
+<p>理想情况下，如果订单金额在1到10万之间均匀分布，那么订单会被均匀分到100个文件中，每个小文件中存储大约100MB的订单数据，我们就是可以将100个小文件依次放到内存中，用快速排序来排序。等所有文件都排好序之后我们就按照文件编号依次将数据写到一个文件中。如果数据分布不均匀，可对较大的部分进行再次划分。</p>
+<a class="header" href="./sort.html#计数排序" id="计数排序"><h3>计数排序</h3></a>
+<p>类比桶排序，当要排序的n个数据所处范围并不大的时候，比如最大值为k，我们就可以把数据划分成k个桶。每个人桶内数据值都是相等的，省掉了桶内排序的时间。</p>
+<p>假设待排序数组<code>A[8]</code>中有数据<code>2，5，3，0，2，3，0，3</code>。我们可以得到一个代表数据范围的数组<code>C[6]</code>表示数组<code>A[8]</code>的数据范围为<code>0~5</code>，有6种不同的元素。</p>
+<p><code>C[6]</code>中的数据为<code>2，0，2，3，0，1</code>，表示<code>A[8]</code>中有2个0，0个1，2个2，3个3，0个4，1个5。依次，我们可以对数组<code>C[6]</code>求和，改写为<code>2，2，4，7，7，8</code>。改写后的<code>C[6]</code>表示<code>A[8]</code>中小于等于0的数据有2个，小于等于1的数据有2个，小于等于2的数据有4个，小于等于3的数据有7个...。</p>
+<p>然后从后往前依次扫描数组<code>A[8]</code>（为什么要从后往前？）。比如当取到数字3，再从数组<code>C[6]</code>取出<code>C[3]=7</code>（也就是说目前数组<code>A[8]</code>中小于等于3的数有7个），将<code>A[8]</code>取出的数字3放到已排序数组的<code>R[8]</code>中的第7位（下标6的位置）。这之后再把<code>C[6]</code>中下标3里的7减到6，表示<code>A[8]</code>中的一个3排到<code>R[8]</code>后<code>A[8]</code>中剩余的小于等于3的数据个数还有6个。循环往复直到所有数据排序完成。</p>
+<p><img src="picture/sort11_1.PNG" style="width:500px"/>
+<img src="picture/sort11_2.PNG" style="width:500px"/></p>
+<p>计数排序只能用在数据范围不大的场景中，如果数据范围k比要排序的数据n大很多，就不适合用计数排序了。而且，计数排序只能给非负整数排序，如果要排序的数据是其他类型的，要将其在不改变相对大小的情况下转化为非负整数。</p>
+<a class="header" href="./sort.html#基数排序" id="基数排序"><h3>基数排序</h3></a>
+<p><img src="picture/sort12.PNG" style="width:500px"/></p>
+<p>这里按照每位来排序的排序算法要是稳定的，否则这个实现思路就是不正确的。因为如果是非稳定排序算法，那最后一次排序只会考虑最高位的大小顺序，完全不管其他位的大小关系，那么低位的排序就完全没有意义了。</p>
+<p>而针对每一位的排序，可以用桶排序和计数排序来达到<code>O(n)</code>的时间复杂度。如果要排序的数据有k位，那其时间复杂度为<code>O(n*k)</code>，如果要排序的是手机号码，那其时间复杂度就是线性的<code>O(11*n)=O(n)</code>。</p>
+<p>基数排序对要排序的数据是有要求的，需要可以分割出独立的“位”来比较，而且位之间有递进的关系，如果a数据的高位比b数据大，那剩下的低位就不用比较了。除此之外，每一位的数据范围不能太大，要可以用线性排序算法来排序，否则，基数排序的时间复杂度就无法做到<code>O(n)</code>了。</p>
+<a class="header" href="./sort.html#必知必会" id="必知必会"><h2>必知必会</h2></a>
+<p>实现归并排序、快速排序、插入排序、冒泡排序、选择排序</p>
+<p>实现在<code>O(n)</code>的时间复杂度内找到一组数据的第k大的元素</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a rel="prev" href="./recursion.html" class="mobile-nav-chapters previous" title="Previous chapter">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="./binary_tree.html" class="mobile-nav-chapters next" title="Next chapter">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./recursion.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./binary_tree.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

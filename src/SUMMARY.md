@@ -10,5 +10,7 @@
 
 - [递归](./recursion.md)
 
+- [排序](./sort.md)
+
 - [二叉树](./binary_tree.md)
 
