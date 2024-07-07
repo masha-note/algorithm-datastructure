@@ -12,5 +12,7 @@
 
 - [排序](./sort.md)
 
+- [二分查找](./binary_search.md)
+
 - [二叉树](./binary_tree.md)
 
