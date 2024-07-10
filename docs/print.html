@@ -63,7 +63,7 @@
         </script>
 
         <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li><a href="./array.html"><strong>1.</strong> 数组</a></li><li><a href="./linklist.html"><strong>2.</strong> 链表</a></li><li><a href="./stack.html"><strong>3.</strong> 栈</a></li><li><a href="./queue.html"><strong>4.</strong> 队列</a></li><li><a href="./recursion.html"><strong>5.</strong> 递归</a></li><li><a href="./sort.html"><strong>6.</strong> 排序</a></li><li><a href="./binary_search.html"><strong>7.</strong> 二分查找</a></li><li><a href="./binary_tree.html"><strong>8.</strong> 二叉树</a></li></ul>
+            <ul class="chapter"><li><a href="./array.html"><strong>1.</strong> 数组</a></li><li><a href="./linklist.html"><strong>2.</strong> 链表</a></li><li><a href="./stack.html"><strong>3.</strong> 栈</a></li><li><a href="./queue.html"><strong>4.</strong> 队列</a></li><li><a href="./recursion.html"><strong>5.</strong> 递归</a></li><li><a href="./sort.html"><strong>6.</strong> 排序</a></li><li><a href="./binary_search.html"><strong>7.</strong> 二分查找</a></li><li><a href="./skiplist.html"><strong>8.</strong> 跳表</a></li><li><a href="./hash_table.html"><strong>9.</strong> 散列表</a></li><li><a href="./binary_tree.html"><strong>10.</strong> 二叉树</a></li></ul>
         </div>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -704,9 +704,61 @@ func recursion(nums []int, left, right int, value int) int {
 <p>查找有序数组中最后一个值等于给定值的元素</p>
 <p>查找有序数组中第一个值大于等于给定值的元素</p>
 <p>查找有序数组中最后一个值小于等于给定值的元素</p>
+<a class="header" href="print.html#跳表" id="跳表"><h1>跳表</h1></a>
+<p>通常情况下，二分查找依赖数组实现。但是只要我们对链表稍加改造，就可以支持类似“二分”的查找算法。这就是跳表，一种各个方面性能都比较优秀的动态数据结构，可以支持快速地插入、删除、查找操作，写起来也不复杂（作者原文是这么说的...），甚至可以替代红黑树。</p>
+<a class="header" href="print.html#如何理解跳表" id="如何理解跳表"><h2>如何理解“跳表”？</h2></a>
+<p>对于单链表来说，即便其中的数据是有序的，查找元素的时间复杂度也是<code>O(n)</code>。如果像图中那样对链表建立以及“索引”，查找起来相比原来的<code>O(n)</code>就快了一些，至少不用遍历那么多的节点。新建立的这一层叫做<code>索引</code>或<code>索引层</code>。</p>
+<p><img src="picture/skiplist01.PNG" style="width:500px"/></p>
+<p>在这个基础上再建立一级索引，查找所需遍历的节点进一步减少。</p>
+<p><img src="picture/skiplist02.PNG" style="width:500px"/></p>
+<p>当链表较长的时候，比如说有1000、10000个节点。在构建索引后就可以以很高的效率执行查找。</p>
+<a class="header" href="print.html#时间复杂度" id="时间复杂度"><h2>时间复杂度</h2></a>
+<p>按上面图中的模式，每两个节点在上层建立一个索引节点。那么第一级索引约有n/2个节点，二级索引有n/4个节点...。以此类推第<code>k</code>级索引的节点个数为第<code>k-1</code>级索引的<code>1/2</code>，那第<code>k</code>级索引的节点个数就是<code>n/(2^k)</code>。</p>
+<p>假设有<code>h</code>级索引，最高级索引有2个节点，原始链表有<code>n</code>个节点。可以求得<code>h=logn-1</code>（<code>logn</code>代指以2为底n的对数），包含最底层的整个跳表高度就是<code>logn</code>。如果在查找时，每一层都要遍历<code>m</code>个节点，那么跳表的查询时间复杂度就是<code>O(m*logn)</code>。</p>
+<p>在这个例子中，最多只需要遍历最顶层的3个节点就能确定搜索数据在下一层所在的范围。也就是<em>顶层索引的两个节点所指向的两个下层索引节点</em>所形成的区间，而这个区间有3个节点。同样地，根据二层索引的三个节点可以确定数据在三层索引中的范围。因此这里<code>m=3</code>。查找的时间复杂度就是<code>O(3*logn)</code>。<code>m=3</code>的情况下，25级索引（七十多次比较）就可以在几千万个节点的有序链表中执行快速查找。</p>
+<a class="header" href="print.html#空间复杂度" id="空间复杂度"><h2>空间复杂度</h2></a>
+<p>比起单链表，跳表需要存储多级索引。本例中按照<code>n/2</code>，<code>n/4</code>，<code>n/8</code>...是一个等比数列，因此空间复杂度为<code>O(n)</code>。如果将<code>m=3</code>提高到<code>m=4</code>，虽然空间复杂度还是<code>O(n)</code>，但是实际使用空间为之前的1/2。在实际使用中，底层链表存储的经常为很大的对象，而索引层存储的时指针，额外消耗的空间占比并没有那么大。</p>
+<a class="header" href="print.html#动态操作" id="动态操作"><h2>动态操作</h2></a>
+<p>增加和删除单个节点对于链表来说是<code>O(1)</code>的操作，但增加和删除之前需要先执行查询。因此，跳表的增删时间复杂度均为<code>O(logn)</code>。</p>
+<p>需要注意的是，在反复增删之后，有可能会出现索引指向的底层链表区间中的元素个数差距很大的情况，极端情况下甚至会退化成单链表。为了解决这个问题，增删节点的时候要更新对应的索引。在新增数据的时候，经常需要先用随机函数计算所需要更新的索引来平衡跳表索引大小和数据大小从而保证跳表的性能。</p>
+<a class="header" href="print.html#散列表" id="散列表"><h1>散列表</h1></a>
+<p>散列表英文叫“Hash Table”，平常也叫“哈希表”。散列表利用的是数组支持按照下标随机访问数据的特性，所以散列表其实就是数组的一种扩展，有数组演化而来。</p>
+<p>散列表通过散列函数将键值映射为下标，然后将数据存储在数组中对应下标的位置。当按照键值查找元素的时候，用同样的散列函数将键值转化为数组下标，从对应的数组下标的位置取出数据。</p>
+<a class="header" href="print.html#散列函数" id="散列函数"><h2>散列函数</h2></a>
+<p>散列函数在散列表中至关重要，通常该函数定义为<code>hash(key)</code>，其中<code>key</code>表示元素的键值，<code>hash(key)</code>的值表示经过散列函数计算得到的散列值。</p>
+<p>散列函数有三点基本要求：</p>
+<ol>
+<li>
+<p>散列函数计算得到的散列值是一个非负数</p>
+<p>这是因为数组的下标从<code>0</code>开始。</p>
+</li>
+<li>
+<p>相同的键值经计算后得到的散列值是一样的</p>
+<p>如果两次散列的结果不一样，散列表就无法正常工作。</p>
+</li>
+<li>
+<p>不同的键值计算后得到的散列值不一样</p>
+<p>这是理想情况下的要求。在现实生活中几乎找不到一个<em>不同的键值对应的散列值都不一样</em>的散列函数。即使是广为使用的<code>MD5</code>、<code>SHA</code>、<code>CRC</code>等哈希算法也无法完全避免这种散列冲突。</p>
+</li>
+</ol>
+<a class="header" href="print.html#散列冲突" id="散列冲突"><h2>散列冲突</h2></a>
+<p>再好的散列函数也无法避免散列冲突。常用的散列冲突解决方法有两类，开放寻址法（open addressing）和链表法（chaining）。</p>
+<a class="header" href="print.html#开放寻址法" id="开放寻址法"><h3>开放寻址法</h3></a>
+<p>开放寻址法的核心思想是，如果出现了散列冲突，就重新探测一个空闲位置。</p>
+<p><strong>线性探测</strong>是比较简单的一种探测方法。在插入数据的过程中，如果某个键值计算后的散列值对应的位置已被占用，就从当前位置开始往后依次查找到空闲位置为止。</p>
+<p><img src="picture/hashtable00.PNG" style="width:600px"/></p>
+<p>查找和插入的时候类似。从计算出的散列值对应的位置开始往后查找直到遇到未被占用的空间（表示没有要查找的值）或者找到对应的值。</p>
+<p><img src="picture/hashtable01.PNG" style="width:600px"/></p>
+<p>由于在查找的时候，未占用位置会终止查找，所以在删除数据的时候如果知识简单地只删除对应的数据会导致查找失效。所以一般不删除数据而是标记为<code>deleted</code>以确保查找正常。</p>
+<p>可见，线性探测存在很大的问题。当散列表中插入的数据越来越多时，散列冲突发生的可能性就会越来越大，空闲位置会越来越少，线性探测的时间就会越来越久。极端情况下可能需要探测整个散列表，所以最坏情况下时间复杂度为<code>O(n)</code>。同理，删除的时候最坏时间复杂度为<code>O(n)</code>。</p>
+<p>除了线性探测，还有另外两种比较经典的探测方法，二次探测（Quadratic probing）和双重散列（Double hashing）。但不管采用哪种探测方法，当散列表中空闲位置不多的时候，散列冲突的概率就会大大提高。为了尽可能保证散列表的操作效率，一般情况下会尽量保证散列表中有一定比例的空槽位。装载因子用来表示空位的多少。<code>散列表的装载因子 = 填入表中的元素个数/散列表的长度</code>，装载因子越大，说明空闲位置越少，冲突越多，散列表的性能会下降。</p>
+<a class="header" href="print.html#链表法" id="链表法"><h3>链表法</h3></a>
+<p>链表法是一种更加常用的散列冲突解决方法。相比开放寻址法，它要简单得多。图中的散列表，每个buckets（桶）或者叫“槽（slot）”会对应一条链表，所有散列值相同的元素都放到相同槽位对应的链表中。</p>
+<p><img src="picture/hashtable02.PNG" style="width:600px"/></p>
+<p>当插入的时候，只需要通过散列函数计算出对应的散列操作，将其插入到对应的链表中，因此插入的时间复杂度为<code>O(1)</code>。当查找、删除一个元素时，同样通过散列函数计算出对应的槽位，但链表部分查找的时间复杂度为<code>O(k)</code>。其中<code>k</code>为链表的长度，理想情况下<code>k=数据量/buckets数量</code>。所以查找的时间复杂度为<code>O(k)</code>，更均匀的散列和足够数量的buckets可以进一步降低k。</p>
 <a class="header" href="print.html#二叉树" id="二叉树"><h1>二叉树</h1></a>
 <p>树由一系列结点连接而成，连接相邻结点的叫做父子关系。</p>
-<p><img src="picture/IMG_0209.jpg" style="width:700px" /></p>
+<p><img src="picture/linklist00.jpg" style="width:600px" /></p>
 <p>如图，<code>A</code>是<code>B</code>的父结点，<code>B</code>是<code>A</code>的子结点。没有父结点的称为根结点(<code>E</code>)。有相同父结点的互为兄弟结点(<code>B</code>, <code>C</code>, <code>D</code>)。没有子结点的称为叶子结点(如<code>I</code>和<code>J</code>)。</p>
 <p><code>结点的高度</code> = 该结点到叶子结点的最长路径</p>
 <pre><code>A到G路径长度(边的数量)为2，因此A的高度为2

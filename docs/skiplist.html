@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>跳表 - 算法与数据结构</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./array.html"><strong>1.</strong> 数组</a></li><li><a href="./linklist.html"><strong>2.</strong> 链表</a></li><li><a href="./stack.html"><strong>3.</strong> 栈</a></li><li><a href="./queue.html"><strong>4.</strong> 队列</a></li><li><a href="./recursion.html"><strong>5.</strong> 递归</a></li><li><a href="./sort.html"><strong>6.</strong> 排序</a></li><li><a href="./binary_search.html"><strong>7.</strong> 二分查找</a></li><li><a href="./skiplist.html" class="active"><strong>8.</strong> 跳表</a></li><li><a href="./hash_table.html"><strong>9.</strong> 散列表</a></li><li><a href="./binary_tree.html"><strong>10.</strong> 二叉树</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title">算法与数据结构</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./skiplist.html#跳表" id="跳表"><h1>跳表</h1></a>
+<p>通常情况下，二分查找依赖数组实现。但是只要我们对链表稍加改造，就可以支持类似“二分”的查找算法。这就是跳表，一种各个方面性能都比较优秀的动态数据结构，可以支持快速地插入、删除、查找操作，写起来也不复杂（作者原文是这么说的...），甚至可以替代红黑树。</p>
+<a class="header" href="./skiplist.html#如何理解跳表" id="如何理解跳表"><h2>如何理解“跳表”？</h2></a>
+<p>对于单链表来说，即便其中的数据是有序的，查找元素的时间复杂度也是<code>O(n)</code>。如果像图中那样对链表建立以及“索引”，查找起来相比原来的<code>O(n)</code>就快了一些，至少不用遍历那么多的节点。新建立的这一层叫做<code>索引</code>或<code>索引层</code>。</p>
+<p><img src="picture/skiplist01.PNG" style="width:500px"/></p>
+<p>在这个基础上再建立一级索引，查找所需遍历的节点进一步减少。</p>
+<p><img src="picture/skiplist02.PNG" style="width:500px"/></p>
+<p>当链表较长的时候，比如说有1000、10000个节点。在构建索引后就可以以很高的效率执行查找。</p>
+<a class="header" href="./skiplist.html#时间复杂度" id="时间复杂度"><h2>时间复杂度</h2></a>
+<p>按上面图中的模式，每两个节点在上层建立一个索引节点。那么第一级索引约有n/2个节点，二级索引有n/4个节点...。以此类推第<code>k</code>级索引的节点个数为第<code>k-1</code>级索引的<code>1/2</code>，那第<code>k</code>级索引的节点个数就是<code>n/(2^k)</code>。</p>
+<p>假设有<code>h</code>级索引，最高级索引有2个节点，原始链表有<code>n</code>个节点。可以求得<code>h=logn-1</code>（<code>logn</code>代指以2为底n的对数），包含最底层的整个跳表高度就是<code>logn</code>。如果在查找时，每一层都要遍历<code>m</code>个节点，那么跳表的查询时间复杂度就是<code>O(m*logn)</code>。</p>
+<p>在这个例子中，最多只需要遍历最顶层的3个节点就能确定搜索数据在下一层所在的范围。也就是<em>顶层索引的两个节点所指向的两个下层索引节点</em>所形成的区间，而这个区间有3个节点。同样地，根据二层索引的三个节点可以确定数据在三层索引中的范围。因此这里<code>m=3</code>。查找的时间复杂度就是<code>O(3*logn)</code>。<code>m=3</code>的情况下，25级索引（七十多次比较）就可以在几千万个节点的有序链表中执行快速查找。</p>
+<a class="header" href="./skiplist.html#空间复杂度" id="空间复杂度"><h2>空间复杂度</h2></a>
+<p>比起单链表，跳表需要存储多级索引。本例中按照<code>n/2</code>，<code>n/4</code>，<code>n/8</code>...是一个等比数列，因此空间复杂度为<code>O(n)</code>。如果将<code>m=3</code>提高到<code>m=4</code>，虽然空间复杂度还是<code>O(n)</code>，但是实际使用空间为之前的1/2。在实际使用中，底层链表存储的经常为很大的对象，而索引层存储的时指针，额外消耗的空间占比并没有那么大。</p>
+<a class="header" href="./skiplist.html#动态操作" id="动态操作"><h2>动态操作</h2></a>
+<p>增加和删除单个节点对于链表来说是<code>O(1)</code>的操作，但增加和删除之前需要先执行查询。因此，跳表的增删时间复杂度均为<code>O(logn)</code>。</p>
+<p>需要注意的是，在反复增删之后，有可能会出现索引指向的底层链表区间中的元素个数差距很大的情况，极端情况下甚至会退化成单链表。为了解决这个问题，增删节点的时候要更新对应的索引。在新增数据的时候，经常需要先用随机函数计算所需要更新的索引来平衡跳表索引大小和数据大小从而保证跳表的性能。</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a rel="prev" href="./binary_search.html" class="mobile-nav-chapters previous" title="Previous chapter">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="./hash_table.html" class="mobile-nav-chapters next" title="Next chapter">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./binary_search.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./hash_table.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

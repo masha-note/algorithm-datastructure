@@ -2,7 +2,7 @@
 
 树由一系列结点连接而成，连接相邻结点的叫做父子关系。
 
-<img src="picture/IMG_0209.jpg" style="width:700px" />
+<img src="picture/linklist00.jpg" style="width:600px" />
 
 如图，`A`是`B`的父结点，`B`是`A`的子结点。没有父结点的称为根结点(`E`)。有相同父结点的互为兄弟结点(`B`, `C`, `D`)。没有子结点的称为叶子结点(如`I`和`J`)。
 

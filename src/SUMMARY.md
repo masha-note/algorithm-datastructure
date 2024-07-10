@@ -14,5 +14,9 @@
 
 - [二分查找](./binary_search.md)
 
+- [跳表](./skiplist.md)
+
+- [散列表](./hash_table.md)
+
 - [二叉树](./binary_tree.md)
 
