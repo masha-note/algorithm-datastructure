@@ -1,0 +1,324 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>红黑树 - 算法与数据结构</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./array.html"><strong>1.</strong> 数组</a></li><li><a href="./linklist.html"><strong>2.</strong> 链表</a></li><li><a href="./stack.html"><strong>3.</strong> 栈</a></li><li><a href="./queue.html"><strong>4.</strong> 队列</a></li><li><a href="./recursion.html"><strong>5.</strong> 递归</a></li><li><a href="./sort.html"><strong>6.</strong> 排序</a></li><li><a href="./binary_search.html"><strong>7.</strong> 二分查找</a></li><li><a href="./skiplist.html"><strong>8.</strong> 跳表</a></li><li><a href="./hash_table.html"><strong>9.</strong> 散列表</a></li><li><a href="./binary_tree.html"><strong>10.</strong> 二叉树</a></li><li><a href="./red_black_tree.html" class="active"><strong>11.</strong> 红黑树</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title">算法与数据结构</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./red_black_tree.html#红黑树" id="红黑树"><h1>红黑树</h1></a>
+<p>二叉查找树是最常用的一种二叉树，支持快速的插入、删除、查找操作，理想情况下时间复杂度为<code>O(logn)</code>。但是在频繁的更新过程中，可能会出现树的高度远大于理想情况导致二叉树退化为链表，复杂度为<code>O(n)</code>。为了解决复杂度退化的问题，需要设计一种平衡二叉查找树，而平衡二叉查找树中最常用的就是红黑树。</p>
+<a class="header" href="./red_black_tree.html#什么是平衡二叉查找树" id="什么是平衡二叉查找树"><h2>什么是平衡二叉查找树？</h2></a>
+<p><code>平衡二叉树</code>的严格定义：二叉树中任意一节点左右子树的高度相差不能大于1。</p>
+<pre><code>根据此定义，完全二叉树、满二叉树都是平衡二叉树。而非完全二叉树也可能是平衡二叉树
+</code></pre>
+<p><code>平衡二叉查找树</code>不仅满足上面平衡二叉树的定义，还满足二叉查找树的特点。最先被发明的平衡二叉查找树是<a href="https://zh.wikipedia.org/zh-hans/AVL%E6%A0%91">AVL树</a>，它严格符合平衡二叉查找树的定义，即任何节点的左右子树高度差不超过1，是一种高度平衡的二叉查找树。</p>
+<p>平衡二叉树的初衷是解决复杂度退化的问题。因此并不是所有解决方案都像AVL树那样高度平衡。红黑树从根节点到各个子结点的最长路径有可能会比最短路径大1倍。但只要整棵“树”左右比较“对称”、“平衡”就能让整棵树的高度相对低一些，相应的插入、删除、查找等操作效率不至于退化太严重。</p>
+<a class="header" href="./red_black_tree.html#红黑树的定义" id="红黑树的定义"><h2>红黑树的定义</h2></a>
+<p>红黑树中的节点，一类被标记为黑色，一类被标记为红色。除此之外，一颗红黑树还需要满足以下的要求：</p>
+<ul>
+<li>根节点是黑色的；</li>
+<li>每个叶子节点都是黑色的空节点，也就是说叶子节点不存储数据；</li>
+<li>任何相邻的节点都不能同时为红色，也就是说红色节点是被黑色节点隔开的；</li>
+<li>对于任一节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点。</li>
+</ul>
+<p>其中第二点是为了简化代码实现。以下是两个红黑树图例。</p>
+<p><img src="picture/red-black-tree00.PNG" style="width:500px"/></p>
+<a class="header" href="./red_black_tree.html#红黑树的平衡性" id="红黑树的平衡性"><h2>红黑树的平衡性</h2></a>
+<p>一棵高度平衡的二叉树的高度大约是<code>logn</code>（以2为底n的对数）。因此红黑树的平衡性如何可以通过计算高度来评估。</p>
+<p>如果将树中的红色节点从红黑树中去掉，有些节点就没有父节点了。将原来的祖父节点作为“没有父节点的节点”新的父节点。原来的二叉树就变成了四叉树。</p>
+<p>根据红黑树定义中“<code>对于任一节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点</code>”，这棵四叉“黑树”每层中的节点的高度都是一致的，如果将“多余”的节点下移就可以将四叉树变成完全二叉树。而完全二叉树的高度近似<code>logn</code>，因此四叉“黑树”的高度是小于<code>logn</code>的。</p>
+<p><img src="picture/red-black-tree01.PNG" style="width:500px"/></p>
+<p>根据<code>任何相邻的节点都不能同时为红色，也就是说红色节点是被黑色节点隔开的</code>，每有一个红色节点就相应的要有一个黑色节点将它跟其他红色节点隔开。而红黑树中“黑树”部分的最长路径不超过<code>logn</code>，加入红色节点后的红黑树高度不超过<code>2*logn</code>。也就是说红黑树的高度近似<code>2*logn</code>，相比高度平衡的AVL树仅大了一倍，在性能上下降的并不多。</p>
+<a class="header" href="./red_black_tree.html#平衡性调整" id="平衡性调整"><h2>平衡性调整</h2></a>
+<p>在删除和插入过程中，肯能会破坏红黑树定义中的两点：</p>
+<ul>
+<li>任何相邻的节点都不能同时为红色，也就是说红色节点是被黑色节点隔开的。</li>
+<li>对于任一节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点。</li>
+</ul>
+<p>这时候就需要通过一些操作来进行调整以满足红黑树的定义。这就是左旋（rotate left）、右旋（rotate right）。</p>
+<p><img src="picture/red-black-tree02.PNG" style="width:500px"/></p>
+<a class="header" href="./red_black_tree.html#插入操作的平衡性调整" id="插入操作的平衡性调整"><h2>插入操作的平衡性调整</h2></a>
+<p><code>红黑树规定插入的节点必须是红色的</code>。而且，二叉查找树中新插入的节点都是放在叶子节点上的。</p>
+<ul>
+<li>如果插入节点的父节点是黑色的，直接插入即可；</li>
+<li>如果插入的是根节点，将节点颜色变成黑色即可。</li>
+</ul>
+<p>初次之外的操作都需要调整，调整操作包括左右旋和改变颜色。</p>
+<p>红黑树的平衡性调整是一个迭代的过程。正在被处理的称为“<code>关注节点</code>”，关注节点随迭代变化，最开始的关注节点就是要插入的节点。</p>
+<a class="header" href="./red_black_tree.html#case-1关注节点的叔节点是红色的" id="case-1关注节点的叔节点是红色的"><h3>CASE 1：关注节点的叔节点是红色的</h3></a>
+<p>该情况调整如下：</p>
+<p><img src="picture/red-black-tree03.PNG" style="width:500px"/></p>
+<ol>
+<li>
+<p>将<code>关注节点的父节点</code>、<code>关注节点的叔节点</code>设置成黑色；</p>
+</li>
+<li>
+<p>将<code>关注节点的祖父节点</code>设置成红色；</p>
+</li>
+<li>
+<p>关注节点变成当前关注节点的祖父节点；</p>
+</li>
+<li>
+<p>迭代到<a href="./red_black_tree.html#case-2%E5%85%B3%E6%B3%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%8F%94%E8%8A%82%E7%82%B9%E6%98%AF%E9%BB%91%E8%89%B2%E5%85%B3%E6%B3%A8%E8%8A%82%E7%82%B9%E6%98%AF%E7%88%B6%E8%8A%82%E7%82%B9%E7%9A%84%E5%8F%B3%E5%AD%90%E8%8A%82%E7%82%B9">CASE 2</a>或者<a href="./red_black_tree.html#case-3%E5%85%B3%E6%B3%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%8F%94%E8%8A%82%E7%82%B9%E6%98%AF%E9%BB%91%E8%89%B2%E5%85%B3%E6%B3%A8%E8%8A%82%E7%82%B9%E6%98%AF%E7%88%B6%E8%8A%82%E7%82%B9%E7%9A%84%E5%B7%A6%E5%AD%90%E8%8A%82%E7%82%B9">CASE 3</a>。</p>
+</li>
+</ol>
+<a class="header" href="./red_black_tree.html#case-2关注节点的叔节点是黑色关注节点是父节点的右子节点" id="case-2关注节点的叔节点是黑色关注节点是父节点的右子节点"><h3>CASE 2：关注节点的叔节点是黑色，关注节点是父节点的右子节点</h3></a>
+<p>该情况调整如下：</p>
+<p><img src="picture/red-black-tree04.PNG" style="width:500px"/></p>
+<ol>
+<li>
+<p>关注节点变成当前关注节点的父节点；</p>
+</li>
+<li>
+<p>围绕关注节点做左旋；</p>
+</li>
+<li>
+<p>迭代到<a href="./red_black_tree.html#case-3%E5%85%B3%E6%B3%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%8F%94%E8%8A%82%E7%82%B9%E6%98%AF%E9%BB%91%E8%89%B2%E5%85%B3%E6%B3%A8%E8%8A%82%E7%82%B9%E6%98%AF%E7%88%B6%E8%8A%82%E7%82%B9%E7%9A%84%E5%B7%A6%E5%AD%90%E8%8A%82%E7%82%B9">CASE 3</a>。</p>
+</li>
+</ol>
+<a class="header" href="./red_black_tree.html#case-3关注节点的叔节点是黑色关注节点是父节点的左子节点" id="case-3关注节点的叔节点是黑色关注节点是父节点的左子节点"><h3>CASE 3：关注节点的叔节点是黑色，关注节点是父节点的左子节点</h3></a>
+<p>该情况调整如下：</p>
+<p><img src="picture/red-black-tree05.PNG" style="width:500px"/></p>
+<ol>
+<li>
+<p>围绕关注节点的<code>祖父节点</code>右旋；</p>
+</li>
+<li>
+<p>将<code>关注节点的父节点</code>和<code>关注节点的兄弟节点</code>的颜色互换，调整结束。</p>
+</li>
+</ol>
+<a class="header" href="./red_black_tree.html#删除操作的平衡性调整" id="删除操作的平衡性调整"><h2>删除操作的平衡性调整</h2></a>
+<p>删除操作的平衡性调整分两步：</p>
+<p>第一步是<strong>针对删除节点初步调整</strong>。初步调整只保证整棵红黑树在一个节点删除后仍满足“<code>对于任一节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点</code>”的要求。</p>
+<p>第二步是<strong>针对关注节点进行二次调整</strong>，让树满足“<code>任何相邻的节点都不能同时为红色，也就是说红色节点是被黑色节点隔开的</code>”的定义。</p>
+<a class="header" href="./red_black_tree.html#针对删除节点初步调整" id="针对删除节点初步调整"><h3>针对删除节点初步调整</h3></a>
+<p>在红黑树的定义中只包含红黑两种节点，经过初步调整后，为了满足红黑树的定义，有些节点会被标记成两种颜色，“红-黑”或者“黑-黑”。如果一个节点被标记成“黑-黑”，那再计算黑色节点个数的时候要算成2个黑色节点。</p>
+<a class="header" href="./red_black_tree.html#case-1要删除的节点只有一个子节点" id="case-1要删除的节点只有一个子节点"><h4>CASE 1：要删除的节点只有一个子节点</h4></a>
+<p>该情况下用子节点替换掉该节点，并将颜色变成黑色。</p>
+<a class="header" href="./red_black_tree.html#case-2要删除的节点有两个非空节点并且它的后继节点就是它的右子节点" id="case-2要删除的节点有两个非空节点并且它的后继节点就是它的右子节点"><h4>CASE 2：要删除的节点有两个非空节点，并且它的后继节点就是它的右子节点</h4></a>
+<p>将要删除的节点视为关注节点，该情况下做如下调整：</p>
+<p><img src="picture/red-black-tree06.PNG" style="width:500px"/></p>
+<ol>
+<li>
+<p>用关注节点的右子节点替换该节点，并将关注节点变为这个右子节点；</p>
+<p>后继节点：二叉树中序遍历是该节点后下一个遍历到的节点。所以一个节点的后继节点是没有左子节点的。</p>
+</li>
+<li>
+<p>将关注节点的颜色设置成和已删除的节点一样的颜色，<code>如果关注节点是黑色，给它的右子节点加上黑色</code>（变成“红-黑”或者“黑-黑”）。</p>
+<p>图中不带颜色的节点表示处理的时候这些节点可以是黑色也可以是红色。外圈描边的颜色表示标记加上的颜色。</p>
+<p>给右子节点加上黑色是为了保证即便关注节点的黑色被覆盖后，树仍然满足“<code>对于任一节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点</code>”。</p>
+</li>
+<li>
+<p>关注节点变成当前关注节点的右子节点，进入<a href="./red_black_tree.html#%E9%92%88%E5%AF%B9%E5%85%B3%E6%B3%A8%E8%8A%82%E7%82%B9%E8%BF%9B%E8%A1%8C%E4%BA%8C%E6%AC%A1%E8%B0%83%E6%95%B4">第二步调整</a>。</p>
+</li>
+</ol>
+<a class="header" href="./red_black_tree.html#case-3要删除的节点有两个非空子节点并且它的后继节点不是右子节点" id="case-3要删除的节点有两个非空子节点并且它的后继节点不是右子节点"><h4>CASE 3：要删除的节点有两个非空子节点并且它的后继节点不是右子节点</h4></a>
+<p>将要删除的节点视为关注节点，该情况下做如下调整：</p>
+<p><img src="picture/red-black-tree07.PNG" style="width:500px"/></p>
+<ol>
+<li>
+<p>按照<a href="./red_black_tree.html#case-1%E8%A6%81%E5%88%A0%E9%99%A4%E7%9A%84%E8%8A%82%E7%82%B9%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AA%E5%AD%90%E8%8A%82%E7%82%B9">CASE 1</a>的步骤取出关注节点的后继节点；</p>
+</li>
+<li>
+<p>删除关注节点，将前面<code>取出的关注节点的后继节点</code>插入到关注节点的位置，关注节点变更为插入的这个节点；</p>
+</li>
+<li>
+<p>关注节点的颜色变为跟<code>已删除的那个关注节点</code>的颜色一样。如果<code>当前关注节点原本的颜色</code>是黑色，同样需要给右子节点加上黑色（变成“红-黑”或者“黑-黑”）；</p>
+</li>
+<li>
+<p>关注节点变成当前关注节点的右子节点，进入<a href="./red_black_tree.html#%E9%92%88%E5%AF%B9%E5%85%B3%E6%B3%A8%E8%8A%82%E7%82%B9%E8%BF%9B%E8%A1%8C%E4%BA%8C%E6%AC%A1%E8%B0%83%E6%95%B4">第二步调整</a>。</p>
+</li>
+</ol>
+<a class="header" href="./red_black_tree.html#针对关注节点进行二次调整" id="针对关注节点进行二次调整"><h3>针对关注节点进行二次调整</h3></a>
+<p>首次调整后，关注节点变成了“红-黑”或者“黑-黑”节点。第二次调整是为了让红黑树中不存在相邻的红色节点。</p>
+<a class="header" href="./red_black_tree.html#case-1关注节点的兄弟节点是红色" id="case-1关注节点的兄弟节点是红色"><h4>CASE 1：关注节点的兄弟节点是红色</h4></a>
+<p>该情况下做如下调整：</p>
+<p><img src="picture/red-black-tree08.PNG" style="width:500px"/></p>
+<ol>
+<li>
+<p>围绕<code>关注节点的父节点</code>左旋；</p>
+</li>
+<li>
+<p><code>关注节点当前的父节点</code>和<code>关注节点当前的祖父节点</code>交换颜色；</p>
+</li>
+<li>
+<p>不改变关注节点继续在<a href="./red_black_tree.html#%E9%92%88%E5%AF%B9%E5%85%B3%E6%B3%A8%E8%8A%82%E7%82%B9%E8%BF%9B%E8%A1%8C%E4%BA%8C%E6%AC%A1%E8%B0%83%E6%95%B4">第二步</a>中进行迭代。</p>
+</li>
+</ol>
+<a class="header" href="./red_black_tree.html#case-2关注节点的兄弟节点是黑色并且这个兄弟节点的两个子节点都是黑色" id="case-2关注节点的兄弟节点是黑色并且这个兄弟节点的两个子节点都是黑色"><h4>CASE 2：关注节点的兄弟节点是黑色并且这个兄弟节点的两个子节点都是黑色</h4></a>
+<p>该情况下做如下调整（图中<code>a</code>为初始的关注节点）：</p>
+<p><img src="picture/red-black-tree09.PNG" style="width:500px"/></p>
+<ol>
+<li>
+<p>将<code>关注节点的兄弟节点</code>变成红色；</p>
+</li>
+<li>
+<p>去除关注节点上之前加上的黑色；</p>
+</li>
+<li>
+<p>给<code>关注节点的父节点</code>加上一个黑色（变成“红-黑”或者“黑-黑”）；</p>
+</li>
+<li>
+<p>关注节点变成当前关注节点的父节点，继续在<a href="./red_black_tree.html#%E9%92%88%E5%AF%B9%E5%85%B3%E6%B3%A8%E8%8A%82%E7%82%B9%E8%BF%9B%E8%A1%8C%E4%BA%8C%E6%AC%A1%E8%B0%83%E6%95%B4">第二步</a>中进行迭代。</p>
+</li>
+</ol>
+<a class="header" href="./red_black_tree.html#case-3关注节点的兄弟节点是黑色这个兄弟节点的左子节点为红色右子节点为黑色" id="case-3关注节点的兄弟节点是黑色这个兄弟节点的左子节点为红色右子节点为黑色"><h4>CASE 3：关注节点的兄弟节点是黑色，这个兄弟节点的左子节点为红色右子节点为黑色</h4></a>
+<p>该情况下做如下调整：</p>
+<p><img src="picture/red-black-tree10.PNG" style="width:500px"/></p>
+<ol>
+<li>
+<p>围绕<code>关注节点的兄弟节点</code>右旋；</p>
+</li>
+<li>
+<p><code>关注节点当前的兄弟节点</code>和<code>这个兄弟节点的右子节点</code>（关注节点原来的兄弟节点）交换颜色；</p>
+</li>
+<li>
+<p>不改变关注节点迭代到<a href="./red_black_tree.html#%E9%92%88%E5%AF%B9%E5%85%B3%E6%B3%A8%E8%8A%82%E7%82%B9%E8%BF%9B%E8%A1%8C%E4%BA%8C%E6%AC%A1%E8%B0%83%E6%95%B4">CASE 4</a>中进行迭代。</p>
+</li>
+</ol>
+<a class="header" href="./red_black_tree.html#case4关注节点的兄弟节点是黑色这个兄弟节点的右子节点是红色" id="case4关注节点的兄弟节点是黑色这个兄弟节点的右子节点是红色"><h4>CASE4：关注节点的兄弟节点是黑色，这个兄弟节点的右子节点是红色</h4></a>
+<p>该情况下做如下调整：</p>
+<p><img src="picture/red-black-tree11.PNG" style="width:500px"/></p>
+<ol>
+<li>
+<p>围绕<code>关注节点的父节点</code>左旋；</p>
+</li>
+<li>
+<p>将<code>关注节点当前的兄弟节点</code>设置成和<code>关注节点的父节点</code>一样的颜色；</p>
+</li>
+<li>
+<p>将<code>关注节点的父节点</code>的颜色设置成黑色，去除关注节点的一个黑色，将<code>关注节点的叔节点</code>设置成黑色，完成调整。</p>
+</li>
+</ol>
+<a class="header" href="./red_black_tree.html#必知必会" id="必知必会"><h2>必知必会</h2></a>
+<p>理解即可，至于为什么“<code>每个叶子节点都是黑色的空节点，也就是说叶子节点不存储数据</code>”能简化代码，参考代码实现。</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a rel="prev" href="./binary_tree.html" class="mobile-nav-chapters previous" title="Previous chapter">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+
+            </div>
+
+            
+                <a href="./binary_tree.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>
