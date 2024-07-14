@@ -24,7 +24,7 @@
 
 在`f(n)=f(n-1)+f(n-2)`中，`f(5)=f(4)+f(3)`，`f(4)=f(3)+f(2)`。可以发现`f(3)`会被重复计算很多次。
 
-<img src="picture/recursion01.jpg" style="width:500px" />
+<img src="picture/recursion/recursion01.jpg" style="width:500px" />
 
 为了避免这个问题，可以通过一个数据结构（比如散列表）来保存已经求结过的`f(k)`。
 

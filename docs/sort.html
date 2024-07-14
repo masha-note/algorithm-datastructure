@@ -88,7 +88,7 @@
                 <div id="content" class="content">
                     <a class="header" href="./sort.html#排序" id="排序"><h1>排序</h1></a>
 <p>按照时间复杂度，常用的算法可以简单分为以下三类。</p>
-<p><img src="picture/sort01.PNG" style="width:500px"/></p>
+<p><img src="picture/sort/sort01.PNG" style="width:500px"/></p>
 <a class="header" href="./sort.html#分析排序算法" id="分析排序算法"><h2>分析排序算法</h2></a>
 <a class="header" href="./sort.html#排序算法的执行效率" id="排序算法的执行效率"><h3>排序算法的执行效率</h3></a>
 <ol>
@@ -112,11 +112,11 @@
 <p>仅仅用执行效率和内存消耗不足以衡量排序算法的好坏。还有一个重要指标，<code>稳定性</code>。这个概念是说，如果待排序的序列中存在值相等的元素，经过排序后，相等元素之间原有的先后顺序是否发生变化，变化了的算法是不稳定的，否则是稳定的。</p>
 <a class="header" href="./sort.html#冒泡排序" id="冒泡排序"><h2>冒泡排序</h2></a>
 <p>冒泡排序只会操作相邻的两个数据。每次冒泡操作都会对相邻的两个元素进行比较，看是否满足大小关系要求。如果不满足就让它们互换。一次冒泡会让至少一个元素移动到它应该在的位置，重复n次就完成了数据的排序工作。</p>
-<p><img src="picture/sort02.PNG" style="width:500px"/></p>
+<p><img src="picture/sort/sort02.PNG" style="width:500px"/></p>
 <p>可以看出，经过1次冒泡，元素<code>6</code>已经存储在正确的位置上了。要想完成所有数据的排序，只要进行6次这样的冒泡操作就行了。</p>
-<p><img src="picture/sort03.PNG" style="width:500px"/></p>
+<p><img src="picture/sort/sort03.PNG" style="width:500px"/></p>
 <p>当某次冒泡操作已经没有数据交换时，说明已经达到完全有序，不再需要进行后续的冒泡。</p>
-<p><img src="picture/sort04.PNG" style="width:500px"/></p>
+<p><img src="picture/sort/sort04.PNG" style="width:500px"/></p>
 <p>优化后的代码如下：</p>
 <pre><code class="language-Golang">func bubbleSort(nums []int, n int){
     if n &lt;= 1 {
@@ -158,7 +158,7 @@
 </ol>
 <a class="header" href="./sort.html#插入排序" id="插入排序"><h2>插入排序</h2></a>
 <p>将数组中的数据分为两个区间，已排序区间和未排序区间。初始已排序区间只有一个元素，就是数组的第一个元素。插入算法的核心思想是取未排序区间中的元素和已排序区间中的元素一一对比，插入到合适的位置保证已排序区间内的元素依旧有序。重复此过程直到未排序区间为空。</p>
-<p><img src="picture/sort05.PNG" style="width:500px"/></p>
+<p><img src="picture/sort/sort05.PNG" style="width:500px"/></p>
 <p>插入排序也包含元素比较和移动两个操作。对于不同的查找插入点方法（从头到尾、从尾到头），元素的比较次数是有区别的，但移动次数总是固定的，也等于逆序度。如图中数组<code>满有序度=n*(n-1)/2=15</code>，初始有序度为5，因此逆序度为<code>15-5=10</code>，代码实现如下。</p>
 <pre><code class="language-Golang">func insertionSort(nums []int, n int){
     if n &lt;= 1 {
@@ -215,7 +215,7 @@ if a[j] &gt; value {
 </ol>
 <a class="header" href="./sort.html#选择排序" id="选择排序"><h2>选择排序</h2></a>
 <p>选择排序的思路和插入排序类似，也分为已排序区间和未排序区间。但选择排序每次会从未排序区间中找到最小的元素放到已排序区间的末尾。</p>
-<p><img src="picture/sort06.PNG" style="width:500px"/></p>
+<p><img src="picture/sort/sort06.PNG" style="width:500px"/></p>
 <a class="header" href="./sort.html#算法分析-2" id="算法分析-2"><h3>算法分析</h3></a>
 <ol>
 <li>
@@ -234,7 +234,7 @@ if a[j] &gt; value {
 <a class="header" href="./sort.html#归并排序" id="归并排序"><h2>归并排序</h2></a>
 <p>归并排序使用的是<code>分治思想</code>。分治将一个大问题分解成子问题，子问题解决了大问题也就解决了。</p>
 <p>归并排序将数组分为前后两部分，分别对前后两部分进行排序，然后再合并排序好的两部分从而最终达成整个数组的排序。</p>
-<p><img src="picture/sort07.PNG" style="width:500px"/></p>
+<p><img src="picture/sort/sort07.PNG" style="width:500px"/></p>
 <p>归并一般用递归实现，递归的递推公式和终止条件如下。</p>
 <pre><code>递推公式：
 merge_sort(p...r) = merge(merge_sort(p...q), merge_sort(q+1...r))
@@ -288,13 +288,13 @@ l &gt;= r
 <ol>
 <li>
 <p>与归并排序的区别</p>
-<p><img src="picture/sort08.PNG" style="width:500px"/></p>
+<p><img src="picture/sort/sort08.PNG" style="width:500px"/></p>
 <p>由上图可以发现，归并排序<strong>由下到上</strong>先处理子问题然后再合并。而快速排序<strong>由上到下</strong>先分区，再处理子问题，两者恰好相反。</p>
 </li>
 <li>
 <p>快速排序是原地排序算法吗？</p>
 <p>快速排序是否是原地排序算法取决于partitiion函数如何完成分割。如果partition函数申请了额外的空间用于保存左右两个区间，那么其空间复杂度为O(n)。但实际上partition一般采取数据交换的方式来完成原地分区。其策略如图。</p>
-<p><img src="picture/sort09.PNG" style="width:500px"/></p>
+<p><img src="picture/sort/sort09.PNG" style="width:500px"/></p>
 <p>这时候，快速排序所需的额外空间为为常数级，空间复杂度是<code>O(n)</code>，是一个原地排序算法。</p>
 </li>
 <li>
@@ -312,7 +312,7 @@ l &gt;= r
 <p>线性排序指的是那些排序时间复杂度为<code>O(n)</code>的排序算法。之所以能做到线性的时间复杂度，主要原因是这些算法不是基于比较的排序算法，都不涉及元素之间的比较操作。</p>
 <a class="header" href="./sort.html#桶排序" id="桶排序"><h3>桶排序</h3></a>
 <p>顾名思义，桶排序会用到“桶”，核心思想是将要排序的数据分到几个有序的桶里，每个桶里的数据再单独进行排序。桶内排完序之后，再把每个桶里的数据按照顺序依次取出，组成的序列就是有序的了。</p>
-<p><img src="picture/sort10.PNG" style="width:500px"/></p>
+<p><img src="picture/sort/sort10.PNG" style="width:500px"/></p>
 <p>如果要排序的数据有<code>n</code>个，我们把它们均匀地划分到<code>m</code>个桶内，每个桶里就有<code>k=n/m</code>个元素。每个桶里使用快速排序，时间复杂度为<code>O(k*logk)</code>。<code>m</code>个桶排序的时间复杂度就是<code>O(m*k*logk)</code>，因为<code>k=n/m</code>，所以整个桶排序的时间复杂度就是<code>O(n*log(n/m))</code>。当桶的个数<code>m</code>接近数据个数<code>n</code>时，<code>log(n/m)</code>就是一个非常小的常量，这个时候桶排序的时间复杂度接近<code>O(n)</code>。</p>
 <p>也就是说只有当数据分布均匀（每个桶里的数据个数差不多）且桶的个数接近数据个数（每个桶内的数据不多，最好接近2个）的时候时间复杂度才接近<code>O(n)</code>。桶间数据数量差距越大，桶内数据相比2差距越多，时间复杂度差<code>O(n)</code>越高。</p>
 <p><strong>桶排序比较适合在外部排序中</strong>。所谓的外部排序就是数据存储在外部磁盘中，数据量比较大，内存有限，无法将数据全部加载到内存中。</p>
@@ -324,11 +324,11 @@ l &gt;= r
 <p>假设待排序数组<code>A[8]</code>中有数据<code>2，5，3，0，2，3，0，3</code>。我们可以得到一个代表数据范围的数组<code>C[6]</code>表示数组<code>A[8]</code>的数据范围为<code>0~5</code>，有6种不同的元素。</p>
 <p><code>C[6]</code>中的数据为<code>2，0，2，3，0，1</code>，表示<code>A[8]</code>中有2个0，0个1，2个2，3个3，0个4，1个5。依次，我们可以对数组<code>C[6]</code>求和，改写为<code>2，2，4，7，7，8</code>。改写后的<code>C[6]</code>表示<code>A[8]</code>中小于等于0的数据有2个，小于等于1的数据有2个，小于等于2的数据有4个，小于等于3的数据有7个...。</p>
 <p>然后从后往前依次扫描数组<code>A[8]</code>（为什么要从后往前？）。比如当取到数字3，再从数组<code>C[6]</code>取出<code>C[3]=7</code>（也就是说目前数组<code>A[8]</code>中小于等于3的数有7个），将<code>A[8]</code>取出的数字3放到已排序数组的<code>R[8]</code>中的第7位（下标6的位置）。这之后再把<code>C[6]</code>中下标3里的7减到6，表示<code>A[8]</code>中的一个3排到<code>R[8]</code>后<code>A[8]</code>中剩余的小于等于3的数据个数还有6个。循环往复直到所有数据排序完成。</p>
-<p><img src="picture/sort11_1.PNG" style="width:500px"/>
-<img src="picture/sort11_2.PNG" style="width:500px"/></p>
+<p><img src="picture/sort/sort11_1.PNG" style="width:500px"/>
+<img src="picture/sort/sort11_2.PNG" style="width:500px"/></p>
 <p>计数排序只能用在数据范围不大的场景中，如果数据范围k比要排序的数据n大很多，就不适合用计数排序了。而且，计数排序只能给非负整数排序，如果要排序的数据是其他类型的，要将其在不改变相对大小的情况下转化为非负整数。</p>
 <a class="header" href="./sort.html#基数排序" id="基数排序"><h3>基数排序</h3></a>
-<p><img src="picture/sort12.PNG" style="width:500px"/></p>
+<p><img src="picture/sort/sort12.PNG" style="width:500px"/></p>
 <p>这里按照每位来排序的排序算法要是稳定的，否则这个实现思路就是不正确的。因为如果是非稳定排序算法，那最后一次排序只会考虑最高位的大小顺序，完全不管其他位的大小关系，那么低位的排序就完全没有意义了。</p>
 <p>而针对每一位的排序，可以用桶排序和计数排序来达到<code>O(n)</code>的时间复杂度。如果要排序的数据有k位，那其时间复杂度为<code>O(n*k)</code>，如果要排序的是手机号码，那其时间复杂度就是线性的<code>O(11*n)=O(n)</code>。</p>
 <p>基数排序对要排序的数据是有要求的，需要可以分割出独立的“位”来比较，而且位之间有递进的关系，如果a数据的高位比b数据大，那剩下的低位就不用比较了。除此之外，每一位的数据范围不能太大，要可以用线性排序算法来排序，否则，基数排序的时间复杂度就无法做到<code>O(n)</code>了。</p>

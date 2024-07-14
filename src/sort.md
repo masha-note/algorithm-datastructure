@@ -2,7 +2,7 @@
 
 按照时间复杂度，常用的算法可以简单分为以下三类。
 
-<img src="picture/sort01.PNG" style="width:500px"/>
+<img src="picture/sort/sort01.PNG" style="width:500px"/>
 
 ## 分析排序算法
 
@@ -34,15 +34,15 @@
 
 冒泡排序只会操作相邻的两个数据。每次冒泡操作都会对相邻的两个元素进行比较，看是否满足大小关系要求。如果不满足就让它们互换。一次冒泡会让至少一个元素移动到它应该在的位置，重复n次就完成了数据的排序工作。
 
-<img src="picture/sort02.PNG" style="width:500px"/>
+<img src="picture/sort/sort02.PNG" style="width:500px"/>
 
 可以看出，经过1次冒泡，元素`6`已经存储在正确的位置上了。要想完成所有数据的排序，只要进行6次这样的冒泡操作就行了。
 
-<img src="picture/sort03.PNG" style="width:500px"/>
+<img src="picture/sort/sort03.PNG" style="width:500px"/>
 
 当某次冒泡操作已经没有数据交换时，说明已经达到完全有序，不再需要进行后续的冒泡。
 
-<img src="picture/sort04.PNG" style="width:500px"/>
+<img src="picture/sort/sort04.PNG" style="width:500px"/>
 
 优化后的代码如下：
 
@@ -91,7 +91,7 @@ func bubbleSort(nums []int, n int){
 
 将数组中的数据分为两个区间，已排序区间和未排序区间。初始已排序区间只有一个元素，就是数组的第一个元素。插入算法的核心思想是取未排序区间中的元素和已排序区间中的元素一一对比，插入到合适的位置保证已排序区间内的元素依旧有序。重复此过程直到未排序区间为空。
 
-<img src="picture/sort05.PNG" style="width:500px"/>
+<img src="picture/sort/sort05.PNG" style="width:500px"/>
 
 插入排序也包含元素比较和移动两个操作。对于不同的查找插入点方法（从头到尾、从尾到头），元素的比较次数是有区别的，但移动次数总是固定的，也等于逆序度。如图中数组`满有序度=n*(n-1)/2=15`，初始有序度为5，因此逆序度为`15-5=10`，代码实现如下。
 
@@ -156,7 +156,7 @@ func insertionSort(nums []int, n int){
 
 选择排序的思路和插入排序类似，也分为已排序区间和未排序区间。但选择排序每次会从未排序区间中找到最小的元素放到已排序区间的末尾。
 
-<img src="picture/sort06.PNG" style="width:500px"/>
+<img src="picture/sort/sort06.PNG" style="width:500px"/>
 
 ### 算法分析
 
@@ -178,7 +178,7 @@ func insertionSort(nums []int, n int){
 
 归并排序将数组分为前后两部分，分别对前后两部分进行排序，然后再合并排序好的两部分从而最终达成整个数组的排序。
 
-<img src="picture/sort07.PNG" style="width:500px"/>
+<img src="picture/sort/sort07.PNG" style="width:500px"/>
 
 归并一般用递归实现，递归的递推公式和终止条件如下。
 
@@ -244,7 +244,7 @@ l >= r
 
 1. 与归并排序的区别
 
-    <img src="picture/sort08.PNG" style="width:500px"/>
+    <img src="picture/sort/sort08.PNG" style="width:500px"/>
     
     由上图可以发现，归并排序**由下到上**先处理子问题然后再合并。而快速排序**由上到下**先分区，再处理子问题，两者恰好相反。
 
@@ -252,7 +252,7 @@ l >= r
 
     快速排序是否是原地排序算法取决于partitiion函数如何完成分割。如果partition函数申请了额外的空间用于保存左右两个区间，那么其空间复杂度为O(n)。但实际上partition一般采取数据交换的方式来完成原地分区。其策略如图。
 
-    <img src="picture/sort09.PNG" style="width:500px"/>
+    <img src="picture/sort/sort09.PNG" style="width:500px"/>
 
     这时候，快速排序所需的额外空间为为常数级，空间复杂度是`O(n)`，是一个原地排序算法。
 
@@ -276,7 +276,7 @@ l >= r
 
 顾名思义，桶排序会用到“桶”，核心思想是将要排序的数据分到几个有序的桶里，每个桶里的数据再单独进行排序。桶内排完序之后，再把每个桶里的数据按照顺序依次取出，组成的序列就是有序的了。
 
-<img src="picture/sort10.PNG" style="width:500px"/>
+<img src="picture/sort/sort10.PNG" style="width:500px"/>
 
 如果要排序的数据有`n`个，我们把它们均匀地划分到`m`个桶内，每个桶里就有`k=n/m`个元素。每个桶里使用快速排序，时间复杂度为`O(k*logk)`。`m`个桶排序的时间复杂度就是`O(m*k*logk)`，因为`k=n/m`，所以整个桶排序的时间复杂度就是`O(n*log(n/m))`。当桶的个数`m`接近数据个数`n`时，`log(n/m)`就是一个非常小的常量，这个时候桶排序的时间复杂度接近`O(n)`。
 
@@ -300,14 +300,14 @@ l >= r
 
 然后从后往前依次扫描数组`A[8]`（为什么要从后往前？）。比如当取到数字3，再从数组`C[6]`取出`C[3]=7`（也就是说目前数组`A[8]`中小于等于3的数有7个），将`A[8]`取出的数字3放到已排序数组的`R[8]`中的第7位（下标6的位置）。这之后再把`C[6]`中下标3里的7减到6，表示`A[8]`中的一个3排到`R[8]`后`A[8]`中剩余的小于等于3的数据个数还有6个。循环往复直到所有数据排序完成。
 
-<img src="picture/sort11_1.PNG" style="width:500px"/>
-<img src="picture/sort11_2.PNG" style="width:500px"/>
+<img src="picture/sort/sort11_1.PNG" style="width:500px"/>
+<img src="picture/sort/sort11_2.PNG" style="width:500px"/>
 
 计数排序只能用在数据范围不大的场景中，如果数据范围k比要排序的数据n大很多，就不适合用计数排序了。而且，计数排序只能给非负整数排序，如果要排序的数据是其他类型的，要将其在不改变相对大小的情况下转化为非负整数。
 
 ### 基数排序
 
-<img src="picture/sort12.PNG" style="width:500px"/>
+<img src="picture/sort/sort12.PNG" style="width:500px"/>
 
 这里按照每位来排序的排序算法要是稳定的，否则这个实现思路就是不正确的。因为如果是非稳定排序算法，那最后一次排序只会考虑最高位的大小顺序，完全不管其他位的大小关系，那么低位的排序就完全没有意义了。
 

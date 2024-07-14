@@ -102,7 +102,7 @@
 <p>可以通过限制递归调用的最大深度来一定程度上解决这个问题，因为最大允许的递归深度跟当前线程剩余的栈空间大小有关，事先无法计算。而实时计算的代码过于复杂，会影响代码的可读性。所以如果最大深度比较小，如10、50，就可以用这种方法，否则这种方法并不是很实用。</p>
 <a class="header" href="./recursion.html#重复计算" id="重复计算"><h2>重复计算</h2></a>
 <p>在<code>f(n)=f(n-1)+f(n-2)</code>中，<code>f(5)=f(4)+f(3)</code>，<code>f(4)=f(3)+f(2)</code>。可以发现<code>f(3)</code>会被重复计算很多次。</p>
-<p><img src="picture/recursion01.jpg" style="width:500px" /></p>
+<p><img src="picture/recursion/recursion01.jpg" style="width:500px" /></p>
 <p>为了避免这个问题，可以通过一个数据结构（比如散列表）来保存已经求结过的<code>f(k)</code>。</p>
 <a class="header" href="./recursion.html#其他问题" id="其他问题"><h2>其他问题</h2></a>
 <p>除了重复计算和堆栈溢出，递归还有很对其他问题。</p>

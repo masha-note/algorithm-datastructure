@@ -74,13 +74,13 @@ int add(int x, int y) {
 
 从代码中看出，main()函数调用了add()函数获取计算结果并且与临时变量a相加，最后打印res的值。
 
-<img src="picture/stack01.PNG" style="width:500px"/>
+<img src="picture/stack/stack01.PNG" style="width:500px"/>
 
 ## 栈在表达式求值中的应用
 
 编译器利用两个栈来实现表达式求值。其中一个栈保存操作数，另一个保存运算符。从左向右遍历表达式，遇到数字时压入栈中；遇到运算符就与运算符栈的栈顶元素进行比较。如果比运算符栈顶元素的优先级高，将当前运算符压入栈中，否则取出栈顶运算符，从操作数栈的栈顶取2个操作数进行计算，再把计算完的结果压入操作数栈，之后继续下一轮比较。
 
-<img src="picture/stack02.PNG" style="width:600px"/>
+<img src="picture/stack/stack02.PNG" style="width:600px"/>
 
 ## 栈在括号匹配中的应用
 

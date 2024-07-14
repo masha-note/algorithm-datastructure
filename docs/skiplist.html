@@ -90,9 +90,9 @@
 <p>通常情况下，二分查找依赖数组实现。但是只要我们对链表稍加改造，就可以支持类似“二分”的查找算法。这就是跳表，一种各个方面性能都比较优秀的动态数据结构，可以支持快速地插入、删除、查找操作，写起来也不复杂（作者原文是这么说的...），甚至可以替代红黑树。</p>
 <a class="header" href="./skiplist.html#如何理解跳表" id="如何理解跳表"><h2>如何理解“跳表”？</h2></a>
 <p>对于单链表来说，即便其中的数据是有序的，查找元素的时间复杂度也是<code>O(n)</code>。如果像图中那样对链表建立以及“索引”，查找起来相比原来的<code>O(n)</code>就快了一些，至少不用遍历那么多的节点。新建立的这一层叫做<code>索引</code>或<code>索引层</code>。</p>
-<p><img src="picture/skiplist01.PNG" style="width:500px"/></p>
+<p><img src="picture/skiplist/skiplist01.PNG" style="width:500px"/></p>
 <p>在这个基础上再建立一级索引，查找所需遍历的节点进一步减少。</p>
-<p><img src="picture/skiplist02.PNG" style="width:500px"/></p>
+<p><img src="picture/skiplist/skiplist02.PNG" style="width:500px"/></p>
 <p>当链表较长的时候，比如说有1000、10000个节点。在构建索引后就可以以很高的效率执行查找。</p>
 <a class="header" href="./skiplist.html#时间复杂度" id="时间复杂度"><h2>时间复杂度</h2></a>
 <p>按上面图中的模式，每两个节点在上层建立一个索引节点。那么第一级索引约有n/2个节点，二级索引有n/4个节点...。以此类推第<code>k</code>级索引的节点个数为第<code>k-1</code>级索引的<code>1/2</code>，那第<code>k</code>级索引的节点个数就是<code>n/(2^k)</code>。</p>

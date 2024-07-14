@@ -132,7 +132,7 @@ func (aq *ArrayQueue) Dequeue() string {
 }
 </code></pre>
 <p>对于栈来说，我们只需要一个栈顶指针就可以了。但是队列需要两个指针：head和tail。</p>
-<p><img src="picture/queue01.PNG" style="width:500px" /></p>
+<p><img src="picture/queue/queue01.PNG" style="width:500px" /></p>
 <p>从上图中可以发现，随着不停进行入队出队，head和tail会持续往后移。当tail移动到最右边，即使数组还有空闲空间，也无法继续往队列中添加数据了。这时候就需要做数据搬移，保持出队操作不变，只在入队的时候做搬移操作。</p>
 <pre><code class="language-GO">// 入队
 func (aq *ArrayQueue) Enqueue(item string) bool {
@@ -156,7 +156,7 @@ func (aq *ArrayQueue) Enqueue(item string) bool {
 }
 </code></pre>
 <p>从更改后的代码中可以看出，当队列的tail指针移动到数组的最右边后，如果新数据入队就将head到tail之间的数据整体搬移到数组中0到tail-head的位置。</p>
-<p><img src="picture/queue02.PNG" style="width:500px" /></p>
+<p><img src="picture/queue/queue02.PNG" style="width:500px" /></p>
 <p>平常的入队操作的时间复杂度仍然是O(1)，触发搬移的时候搬移的数据量为K(K&lt;=n)，最差时间复杂度为O(n)，均摊到平常入队操作中计得平均得时间复杂度为O(1)。</p>
 <pre><code class="language-GO">type LinkQueue struct {
     head *node
@@ -188,7 +188,7 @@ func (q *LinkQueue) Dequeue() string {
 <p>链表实现的队列中没有固定空间大小，入队与出队的时间复杂度均为O(1)。</p>
 <a class="header" href="./queue.html#循环队列" id="循环队列"><h2>循环队列</h2></a>
 <p>在用数组实现的队列中，当tail==n时会有数据搬移操作，这样入队操作性能就会收到影响。使用循环队列可以避免搬移从而提升性能。</p>
-<p><img src="picture/queue03.PNG" style="width:500px" /></p>
+<p><img src="picture/queue/queue03.PNG" style="width:500px" /></p>
 <p>图中的循环队列大小为8，当继续入队一个数据的时候，tial不由原来的7更新为8，而是变成0回到了数组的头部，使得队列首尾相连。</p>
 <p>这样的方法成功地避免了数据搬移，但是队列空和队列满的判断条件就和原来不一样了。在非循环的顺序队列中，队列的判断条件是<code>tail==n</code>，队列空的判断条件是<code>head==tail</code>。</p>
 <p>对于循环队列，队列空的条件仍然是<code>head==tail</code>。在上图中，队列会在一直入队直到tail==3的时候达到队满，即队列满的条件为<code>(tail+1)%n==head</code>。此时tail是不存储数据的，也就是说循环队列会浪费一个数组的存储空间。</p>

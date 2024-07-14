@@ -23,7 +23,7 @@
 
 其中第二点是为了简化代码实现。以下是两个红黑树图例。
 
-<img src="picture/red-black-tree00.PNG" style="width:500px"/>
+<img src="picture/red-black-tree/red-black-tree00.PNG" style="width:500px"/>
 
 ## 红黑树的平衡性
 
@@ -33,7 +33,7 @@
 
 根据红黑树定义中“`对于任一节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点`”，这棵四叉“黑树”每层中的节点的高度都是一致的，如果将“多余”的节点下移就可以将四叉树变成完全二叉树。而完全二叉树的高度近似`logn`，因此四叉“黑树”的高度是小于`logn`的。
 
-<img src="picture/red-black-tree01.PNG" style="width:500px"/>
+<img src="picture/red-black-tree/red-black-tree01.PNG" style="width:500px"/>
 
 根据`任何相邻的节点都不能同时为红色，也就是说红色节点是被黑色节点隔开的`，每有一个红色节点就相应的要有一个黑色节点将它跟其他红色节点隔开。而红黑树中“黑树”部分的最长路径不超过`logn`，加入红色节点后的红黑树高度不超过`2*logn`。也就是说红黑树的高度近似`2*logn`，相比高度平衡的AVL树仅大了一倍，在性能上下降的并不多。
 
@@ -46,7 +46,7 @@
 
 这时候就需要通过一些操作来进行调整以满足红黑树的定义。这就是左旋（rotate left）、右旋（rotate right）。
 
-<img src="picture/red-black-tree02.PNG" style="width:500px"/>
+<img src="picture/red-black-tree/red-black-tree02.PNG" style="width:500px"/>
 
 ## 插入操作的平衡性调整
 
@@ -63,7 +63,7 @@
 
 该情况调整如下：
 
-<img src="picture/red-black-tree03.PNG" style="width:500px"/>
+<img src="picture/red-black-tree/red-black-tree03.PNG" style="width:500px"/>
 
 1. 将`关注节点的父节点`、`关注节点的叔节点`设置成黑色；
 
@@ -77,7 +77,7 @@
 
 该情况调整如下：
 
-<img src="picture/red-black-tree04.PNG" style="width:500px"/>
+<img src="picture/red-black-tree/red-black-tree04.PNG" style="width:500px"/>
 
 1. 关注节点变成当前关注节点的父节点；
 
@@ -89,7 +89,7 @@
 
 该情况调整如下：
 
-<img src="picture/red-black-tree05.PNG" style="width:500px"/>
+<img src="picture/red-black-tree/red-black-tree05.PNG" style="width:500px"/>
 
 1. 围绕关注节点的`祖父节点`右旋；
 
@@ -115,7 +115,7 @@
 
 将要删除的节点视为关注节点，该情况下做如下调整：
 
-<img src="picture/red-black-tree06.PNG" style="width:500px"/>
+<img src="picture/red-black-tree/red-black-tree06.PNG" style="width:500px"/>
 
 1. 用关注节点的右子节点替换该节点，并将关注节点变为这个右子节点；
 
@@ -133,7 +133,7 @@
 
 将要删除的节点视为关注节点，该情况下做如下调整：
 
-<img src="picture/red-black-tree07.PNG" style="width:500px"/>
+<img src="picture/red-black-tree/red-black-tree07.PNG" style="width:500px"/>
 
 1. 按照[CASE 1](#case-1要删除的节点只有一个子节点)的步骤取出关注节点的后继节点；
 
@@ -151,7 +151,7 @@
 
 该情况下做如下调整：
 
-<img src="picture/red-black-tree08.PNG" style="width:500px"/>
+<img src="picture/red-black-tree/red-black-tree08.PNG" style="width:500px"/>
 
 1. 围绕`关注节点的父节点`左旋；
 
@@ -163,7 +163,7 @@
 
 该情况下做如下调整（图中`a`为初始的关注节点）：
 
-<img src="picture/red-black-tree09.PNG" style="width:500px"/>
+<img src="picture/red-black-tree/red-black-tree09.PNG" style="width:500px"/>
 
 1. 将`关注节点的兄弟节点`变成红色；
 
@@ -177,7 +177,7 @@
 
 该情况下做如下调整：
 
-<img src="picture/red-black-tree10.PNG" style="width:500px"/>
+<img src="picture/red-black-tree/red-black-tree10.PNG" style="width:500px"/>
 
 1. 围绕`关注节点的兄弟节点`右旋；
 
@@ -189,7 +189,7 @@
 
 该情况下做如下调整：
 
-<img src="picture/red-black-tree11.PNG" style="width:500px"/>
+<img src="picture/red-black-tree/red-black-tree11.PNG" style="width:500px"/>
 
 1. 围绕`关注节点的父节点`左旋；
 

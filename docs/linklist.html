@@ -93,7 +93,7 @@
 <a class="header" href="./linklist.html#删除和插入" id="删除和插入"><h2>删除和插入</h2></a>
 <p>与数组一样，链表也支持数据的查找、插入和删除操作。</p>
 <p>在进行数组的插入、删除操作时，为了保持内存数据的连续性，需要做大量的数据搬移，所以时间复杂度时<code>O(n)</code>。而在链表中插入或删除一个数据并不需要保持内存的连续性和搬移节点，因为链表的存储空间本身就不是连续的。针对链表的插入和删除操作，只需要考虑相邻节点的指针改变，所以对应的时间复杂度时<code>O(1)</code>。</p>
-<p><img src="picture/linklist01.png" style="width:500px" /></p>
+<p><img src="picture/linklist/linklist01.png" style="width:500px" /></p>
 <a class="header" href="./linklist.html#单链表" id="单链表"><h2>单链表</h2></a>
 <p>链表的删除和插入操作时间复杂度是<code>O(1)</code>。但代价是对于数据的随机访问，链表没有数组那么高效。因为链表的数据并非连续存储的，所以无法像数组那样<strong>根据首地址和下标通过寻址公式直接计算出对应的内存地址</strong>，而是需要根据指针一个节点一个节点地依次遍历直到找到相应的节点，时间复杂度为<code>O(n)</code>。</p>
 <a class="header" href="./linklist.html#循环链表" id="循环链表"><h2>循环链表</h2></a>
@@ -102,7 +102,7 @@
 <a class="header" href="./linklist.html#双向链表" id="双向链表"><h2>双向链表</h2></a>
 <p>双向链表支持两个方向，每个节点不止有一个后继指针next指向后面的节点，还有一个前驱指针prev指向前面的节点。双向链表需要额外的两个空间来存储后继节点和前驱节点的地址。所以，如果存储同样多的数据，双向链表要比单链表占用更多的内存空间。但支持双向遍历也带来了更高的操作灵活性，使得双向链表可以在<code>O(1)</code>时间复杂度的情况下找到前驱节点。正式这样的特点，也使双向链表在某些情况下的插入、删除等操作都要比单链表更加高效。</p>
 <a class="header" href="./linklist.html#数组与链表的对比" id="数组与链表的对比"><h2>数组与链表的对比</h2></a>
-<p><img src="picture/linklist02.png" style="width:500px" /></p>
+<p><img src="picture/linklist/linklist02.png" style="width:500px" /></p>
 <a class="header" href="./linklist.html#必知必会" id="必知必会"><h2>必知必会</h2></a>
 <p>实现单链表、循环链表、双向链表，支持增删操作</p>
 <p>实现单链表反转</p>

@@ -12,7 +12,7 @@
 
 在进行数组的插入、删除操作时，为了保持内存数据的连续性，需要做大量的数据搬移，所以时间复杂度时`O(n)`。而在链表中插入或删除一个数据并不需要保持内存的连续性和搬移节点，因为链表的存储空间本身就不是连续的。针对链表的插入和删除操作，只需要考虑相邻节点的指针改变，所以对应的时间复杂度时`O(1)`。
 
-<img src="picture/linklist01.png" style="width:500px" />
+<img src="picture/linklist/linklist01.png" style="width:500px" />
 
 ## 单链表
 
@@ -30,7 +30,7 @@
 
 ## 数组与链表的对比
 
-<img src="picture/linklist02.png" style="width:500px" />
+<img src="picture/linklist/linklist02.png" style="width:500px" />
 
 ## 必知必会
 

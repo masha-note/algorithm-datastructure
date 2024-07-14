@@ -6,11 +6,11 @@
 
 对于单链表来说，即便其中的数据是有序的，查找元素的时间复杂度也是`O(n)`。如果像图中那样对链表建立以及“索引”，查找起来相比原来的`O(n)`就快了一些，至少不用遍历那么多的节点。新建立的这一层叫做`索引`或`索引层`。
 
-<img src="picture/skiplist01.PNG" style="width:500px"/>
+<img src="picture/skiplist/skiplist01.PNG" style="width:500px"/>
 
 在这个基础上再建立一级索引，查找所需遍历的节点进一步减少。
 
-<img src="picture/skiplist02.PNG" style="width:500px"/>
+<img src="picture/skiplist/skiplist02.PNG" style="width:500px"/>
 
 当链表较长的时候，比如说有1000、10000个节点。在构建索引后就可以以很高的效率执行查找。
 

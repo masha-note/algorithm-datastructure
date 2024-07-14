@@ -103,12 +103,12 @@
 <li>对于任一节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点。</li>
 </ul>
 <p>其中第二点是为了简化代码实现。以下是两个红黑树图例。</p>
-<p><img src="picture/red-black-tree00.PNG" style="width:500px"/></p>
+<p><img src="picture/red-black-tree/red-black-tree00.PNG" style="width:500px"/></p>
 <a class="header" href="./red_black_tree.html#红黑树的平衡性" id="红黑树的平衡性"><h2>红黑树的平衡性</h2></a>
 <p>一棵高度平衡的二叉树的高度大约是<code>logn</code>（以2为底n的对数）。因此红黑树的平衡性如何可以通过计算高度来评估。</p>
 <p>如果将树中的红色节点从红黑树中去掉，有些节点就没有父节点了。将原来的祖父节点作为“没有父节点的节点”新的父节点。原来的二叉树就变成了四叉树。</p>
 <p>根据红黑树定义中“<code>对于任一节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点</code>”，这棵四叉“黑树”每层中的节点的高度都是一致的，如果将“多余”的节点下移就可以将四叉树变成完全二叉树。而完全二叉树的高度近似<code>logn</code>，因此四叉“黑树”的高度是小于<code>logn</code>的。</p>
-<p><img src="picture/red-black-tree01.PNG" style="width:500px"/></p>
+<p><img src="picture/red-black-tree/red-black-tree01.PNG" style="width:500px"/></p>
 <p>根据<code>任何相邻的节点都不能同时为红色，也就是说红色节点是被黑色节点隔开的</code>，每有一个红色节点就相应的要有一个黑色节点将它跟其他红色节点隔开。而红黑树中“黑树”部分的最长路径不超过<code>logn</code>，加入红色节点后的红黑树高度不超过<code>2*logn</code>。也就是说红黑树的高度近似<code>2*logn</code>，相比高度平衡的AVL树仅大了一倍，在性能上下降的并不多。</p>
 <a class="header" href="./red_black_tree.html#平衡性调整" id="平衡性调整"><h2>平衡性调整</h2></a>
 <p>在删除和插入过程中，肯能会破坏红黑树定义中的两点：</p>
@@ -117,7 +117,7 @@
 <li>对于任一节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点。</li>
 </ul>
 <p>这时候就需要通过一些操作来进行调整以满足红黑树的定义。这就是左旋（rotate left）、右旋（rotate right）。</p>
-<p><img src="picture/red-black-tree02.PNG" style="width:500px"/></p>
+<p><img src="picture/red-black-tree/red-black-tree02.PNG" style="width:500px"/></p>
 <a class="header" href="./red_black_tree.html#插入操作的平衡性调整" id="插入操作的平衡性调整"><h2>插入操作的平衡性调整</h2></a>
 <p><code>红黑树规定插入的节点必须是红色的</code>。而且，二叉查找树中新插入的节点都是放在叶子节点上的。</p>
 <ul>
@@ -128,7 +128,7 @@
 <p>红黑树的平衡性调整是一个迭代的过程。正在被处理的称为“<code>关注节点</code>”，关注节点随迭代变化，最开始的关注节点就是要插入的节点。</p>
 <a class="header" href="./red_black_tree.html#case-1关注节点的叔节点是红色的" id="case-1关注节点的叔节点是红色的"><h3>CASE 1：关注节点的叔节点是红色的</h3></a>
 <p>该情况调整如下：</p>
-<p><img src="picture/red-black-tree03.PNG" style="width:500px"/></p>
+<p><img src="picture/red-black-tree/red-black-tree03.PNG" style="width:500px"/></p>
 <ol>
 <li>
 <p>将<code>关注节点的父节点</code>、<code>关注节点的叔节点</code>设置成黑色；</p>
@@ -145,7 +145,7 @@
 </ol>
 <a class="header" href="./red_black_tree.html#case-2关注节点的叔节点是黑色关注节点是父节点的右子节点" id="case-2关注节点的叔节点是黑色关注节点是父节点的右子节点"><h3>CASE 2：关注节点的叔节点是黑色，关注节点是父节点的右子节点</h3></a>
 <p>该情况调整如下：</p>
-<p><img src="picture/red-black-tree04.PNG" style="width:500px"/></p>
+<p><img src="picture/red-black-tree/red-black-tree04.PNG" style="width:500px"/></p>
 <ol>
 <li>
 <p>关注节点变成当前关注节点的父节点；</p>
@@ -159,7 +159,7 @@
 </ol>
 <a class="header" href="./red_black_tree.html#case-3关注节点的叔节点是黑色关注节点是父节点的左子节点" id="case-3关注节点的叔节点是黑色关注节点是父节点的左子节点"><h3>CASE 3：关注节点的叔节点是黑色，关注节点是父节点的左子节点</h3></a>
 <p>该情况调整如下：</p>
-<p><img src="picture/red-black-tree05.PNG" style="width:500px"/></p>
+<p><img src="picture/red-black-tree/red-black-tree05.PNG" style="width:500px"/></p>
 <ol>
 <li>
 <p>围绕关注节点的<code>祖父节点</code>右旋；</p>
@@ -178,7 +178,7 @@
 <p>该情况下用子节点替换掉该节点，并将颜色变成黑色。</p>
 <a class="header" href="./red_black_tree.html#case-2要删除的节点有两个非空节点并且它的后继节点就是它的右子节点" id="case-2要删除的节点有两个非空节点并且它的后继节点就是它的右子节点"><h4>CASE 2：要删除的节点有两个非空节点，并且它的后继节点就是它的右子节点</h4></a>
 <p>将要删除的节点视为关注节点，该情况下做如下调整：</p>
-<p><img src="picture/red-black-tree06.PNG" style="width:500px"/></p>
+<p><img src="picture/red-black-tree/red-black-tree06.PNG" style="width:500px"/></p>
 <ol>
 <li>
 <p>用关注节点的右子节点替换该节点，并将关注节点变为这个右子节点；</p>
@@ -195,7 +195,7 @@
 </ol>
 <a class="header" href="./red_black_tree.html#case-3要删除的节点有两个非空子节点并且它的后继节点不是右子节点" id="case-3要删除的节点有两个非空子节点并且它的后继节点不是右子节点"><h4>CASE 3：要删除的节点有两个非空子节点并且它的后继节点不是右子节点</h4></a>
 <p>将要删除的节点视为关注节点，该情况下做如下调整：</p>
-<p><img src="picture/red-black-tree07.PNG" style="width:500px"/></p>
+<p><img src="picture/red-black-tree/red-black-tree07.PNG" style="width:500px"/></p>
 <ol>
 <li>
 <p>按照<a href="./red_black_tree.html#case-1%E8%A6%81%E5%88%A0%E9%99%A4%E7%9A%84%E8%8A%82%E7%82%B9%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AA%E5%AD%90%E8%8A%82%E7%82%B9">CASE 1</a>的步骤取出关注节点的后继节点；</p>
@@ -214,7 +214,7 @@
 <p>首次调整后，关注节点变成了“红-黑”或者“黑-黑”节点。第二次调整是为了让红黑树中不存在相邻的红色节点。</p>
 <a class="header" href="./red_black_tree.html#case-1关注节点的兄弟节点是红色" id="case-1关注节点的兄弟节点是红色"><h4>CASE 1：关注节点的兄弟节点是红色</h4></a>
 <p>该情况下做如下调整：</p>
-<p><img src="picture/red-black-tree08.PNG" style="width:500px"/></p>
+<p><img src="picture/red-black-tree/red-black-tree08.PNG" style="width:500px"/></p>
 <ol>
 <li>
 <p>围绕<code>关注节点的父节点</code>左旋；</p>
@@ -228,7 +228,7 @@
 </ol>
 <a class="header" href="./red_black_tree.html#case-2关注节点的兄弟节点是黑色并且这个兄弟节点的两个子节点都是黑色" id="case-2关注节点的兄弟节点是黑色并且这个兄弟节点的两个子节点都是黑色"><h4>CASE 2：关注节点的兄弟节点是黑色并且这个兄弟节点的两个子节点都是黑色</h4></a>
 <p>该情况下做如下调整（图中<code>a</code>为初始的关注节点）：</p>
-<p><img src="picture/red-black-tree09.PNG" style="width:500px"/></p>
+<p><img src="picture/red-black-tree/red-black-tree09.PNG" style="width:500px"/></p>
 <ol>
 <li>
 <p>将<code>关注节点的兄弟节点</code>变成红色；</p>
@@ -245,7 +245,7 @@
 </ol>
 <a class="header" href="./red_black_tree.html#case-3关注节点的兄弟节点是黑色这个兄弟节点的左子节点为红色右子节点为黑色" id="case-3关注节点的兄弟节点是黑色这个兄弟节点的左子节点为红色右子节点为黑色"><h4>CASE 3：关注节点的兄弟节点是黑色，这个兄弟节点的左子节点为红色右子节点为黑色</h4></a>
 <p>该情况下做如下调整：</p>
-<p><img src="picture/red-black-tree10.PNG" style="width:500px"/></p>
+<p><img src="picture/red-black-tree/red-black-tree10.PNG" style="width:500px"/></p>
 <ol>
 <li>
 <p>围绕<code>关注节点的兄弟节点</code>右旋；</p>
@@ -259,7 +259,7 @@
 </ol>
 <a class="header" href="./red_black_tree.html#case4关注节点的兄弟节点是黑色这个兄弟节点的右子节点是红色" id="case4关注节点的兄弟节点是黑色这个兄弟节点的右子节点是红色"><h4>CASE4：关注节点的兄弟节点是黑色，这个兄弟节点的右子节点是红色</h4></a>
 <p>该情况下做如下调整：</p>
-<p><img src="picture/red-black-tree11.PNG" style="width:500px"/></p>
+<p><img src="picture/red-black-tree/red-black-tree11.PNG" style="width:500px"/></p>
 <ol>
 <li>
 <p>围绕<code>关注节点的父节点</code>左旋；</p>

@@ -149,10 +149,10 @@ int add(int x, int y) {
 }
 </code></pre>
 <p>从代码中看出，main()函数调用了add()函数获取计算结果并且与临时变量a相加，最后打印res的值。</p>
-<p><img src="picture/stack01.PNG" style="width:500px"/></p>
+<p><img src="picture/stack/stack01.PNG" style="width:500px"/></p>
 <a class="header" href="./stack.html#栈在表达式求值中的应用" id="栈在表达式求值中的应用"><h2>栈在表达式求值中的应用</h2></a>
 <p>编译器利用两个栈来实现表达式求值。其中一个栈保存操作数，另一个保存运算符。从左向右遍历表达式，遇到数字时压入栈中；遇到运算符就与运算符栈的栈顶元素进行比较。如果比运算符栈顶元素的优先级高，将当前运算符压入栈中，否则取出栈顶运算符，从操作数栈的栈顶取2个操作数进行计算，再把计算完的结果压入操作数栈，之后继续下一轮比较。</p>
-<p><img src="picture/stack02.PNG" style="width:600px"/></p>
+<p><img src="picture/stack/stack02.PNG" style="width:600px"/></p>
 <a class="header" href="./stack.html#栈在括号匹配中的应用" id="栈在括号匹配中的应用"><h2>栈在括号匹配中的应用</h2></a>
 <p>假设表达式中只包含三种括号，圆括号<code>()</code>、方括号<code>[]</code>和花括号<code>{}</code>，并且它们可以任意嵌套。</p>
 <p>用一个栈来存储未匹配的左括号，从左到右依次扫描字符串。当扫描到左括号时将其压入栈中；当扫描到右括号时，从栈顶取出一个左括号。如果能够匹配，则继续下一轮压栈匹配，否则表示匹配不了，表达式非法。</p>

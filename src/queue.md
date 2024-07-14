@@ -51,7 +51,7 @@ func (aq *ArrayQueue) Dequeue() string {
 
 对于栈来说，我们只需要一个栈顶指针就可以了。但是队列需要两个指针：head和tail。
 
-<img src="picture/queue01.PNG" style="width:500px" />
+<img src="picture/queue/queue01.PNG" style="width:500px" />
 
 从上图中可以发现，随着不停进行入队出队，head和tail会持续往后移。当tail移动到最右边，即使数组还有空闲空间，也无法继续往队列中添加数据了。这时候就需要做数据搬移，保持出队操作不变，只在入队的时候做搬移操作。
 
@@ -80,7 +80,7 @@ func (aq *ArrayQueue) Enqueue(item string) bool {
 
 从更改后的代码中可以看出，当队列的tail指针移动到数组的最右边后，如果新数据入队就将head到tail之间的数据整体搬移到数组中0到tail-head的位置。
 
-<img src="picture/queue02.PNG" style="width:500px" />
+<img src="picture/queue/queue02.PNG" style="width:500px" />
 
 平常的入队操作的时间复杂度仍然是O(1)，触发搬移的时候搬移的数据量为K(K<=n)，最差时间复杂度为O(n)，均摊到平常入队操作中计得平均得时间复杂度为O(1)。
 
@@ -119,7 +119,7 @@ func (q *LinkQueue) Dequeue() string {
 
 在用数组实现的队列中，当tail==n时会有数据搬移操作，这样入队操作性能就会收到影响。使用循环队列可以避免搬移从而提升性能。
 
-<img src="picture/queue03.PNG" style="width:500px" />
+<img src="picture/queue/queue03.PNG" style="width:500px" />
 
 图中的循环队列大小为8，当继续入队一个数据的时候，tial不由原来的7更新为8，而是变成0回到了数组的头部，使得队列首尾相连。
 

@@ -2,7 +2,7 @@
 
 树由一系列结点连接而成，连接相邻结点的叫做父子关系。
 
-<img src="picture/linklist00.jpg" style="width:600px" />
+<img src="picture/linklist/linklist00.jpg" style="width:600px" />
 
 如图，`A`是`B`的父结点，`B`是`A`的子结点。没有父结点的称为根结点(`E`)。有相同父结点的互为兄弟结点(`B`, `C`, `D`)。没有子结点的称为叶子结点(如`I`和`J`)。
 
@@ -33,7 +33,7 @@
 * 最底层的叶子结点全部靠左分布
 * 除了最底层，其他层的结点个数达到最大
 
-<img src="picture/tree01.png" style="width:500px" />
+<img src="picture/tree/tree01.png" style="width:500px" />
 
 ## 二叉树的存储
 
@@ -43,7 +43,7 @@
 
 顺序存储规则如下：
 
-<img src="picture/tree02.jpeg" style="width:500px" />
+<img src="picture/tree/tree02.jpeg" style="width:500px" />
 
 根结点存储在下标为1的位置上，左子结点存在`2*1=2`的位置，右子结点存在`2*1+1=3`的位置。对任一存储在数组下标为`index`的结点，其左子结点存储在`2*index`的位置，右子结点存储在`2*index+1`的位置。
 

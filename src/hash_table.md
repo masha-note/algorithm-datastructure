@@ -32,11 +32,11 @@
 
 **线性探测**是比较简单的一种探测方法。在插入数据的过程中，如果某个键值计算后的散列值对应的位置已被占用，就从当前位置开始往后依次查找到空闲位置为止。
 
-<img src="picture/hashtable00.PNG" style="width:600px"/>
+<img src="picture/hashtable/hashtable00.PNG" style="width:600px"/>
 
 查找和插入的时候类似。从计算出的散列值对应的位置开始往后查找直到遇到未被占用的空间（表示没有要查找的值）或者找到对应的值。
 
-<img src="picture/hashtable01.PNG" style="width:600px"/>
+<img src="picture/hashtable/hashtable01.PNG" style="width:600px"/>
 
 由于在查找的时候，未占用位置会终止查找，所以在删除数据的时候如果知识简单地只删除对应的数据会导致查找失效。所以一般不删除数据而是标记为`deleted`以确保查找正常。
 
@@ -48,7 +48,7 @@
 
 链表法是一种更加常用的散列冲突解决方法。相比开放寻址法，它要简单得多。图中的散列表，每个buckets（桶）或者叫“槽（slot）”会对应一条链表，所有散列值相同的元素都放到相同槽位对应的链表中。
 
-<img src="picture/hashtable02.PNG" style="width:600px"/>
+<img src="picture/hashtable/hashtable02.PNG" style="width:600px"/>
 
 当插入的时候，只需要通过散列函数计算出对应的散列操作，将其插入到对应的链表中，因此插入的时间复杂度为`O(1)`。当查找、删除一个元素时，同样通过散列函数计算出对应的槽位，但链表部分查找的时间复杂度为`O(k)`。其中`k`为链表的长度，理想情况下`k=数据量/buckets数量`。所以查找的时间复杂度为`O(k)`，更均匀的散列和足够数量的buckets可以进一步降低k。
 
