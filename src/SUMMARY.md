@@ -21,3 +21,5 @@
 - [二叉树](./binary_tree.md)
 
 - [红黑树](./red_black_tree.md)
+
+- [堆和堆排序](./heap.md)

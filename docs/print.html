@@ -63,7 +63,7 @@
         </script>
 
         <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li><a href="./array.html"><strong>1.</strong> 数组</a></li><li><a href="./linklist.html"><strong>2.</strong> 链表</a></li><li><a href="./stack.html"><strong>3.</strong> 栈</a></li><li><a href="./queue.html"><strong>4.</strong> 队列</a></li><li><a href="./recursion.html"><strong>5.</strong> 递归</a></li><li><a href="./sort.html"><strong>6.</strong> 排序</a></li><li><a href="./binary_search.html"><strong>7.</strong> 二分查找</a></li><li><a href="./skiplist.html"><strong>8.</strong> 跳表</a></li><li><a href="./hash_table.html"><strong>9.</strong> 散列表</a></li><li><a href="./binary_tree.html"><strong>10.</strong> 二叉树</a></li><li><a href="./red_black_tree.html"><strong>11.</strong> 红黑树</a></li></ul>
+            <ul class="chapter"><li><a href="./array.html"><strong>1.</strong> 数组</a></li><li><a href="./linklist.html"><strong>2.</strong> 链表</a></li><li><a href="./stack.html"><strong>3.</strong> 栈</a></li><li><a href="./queue.html"><strong>4.</strong> 队列</a></li><li><a href="./recursion.html"><strong>5.</strong> 递归</a></li><li><a href="./sort.html"><strong>6.</strong> 排序</a></li><li><a href="./binary_search.html"><strong>7.</strong> 二分查找</a></li><li><a href="./skiplist.html"><strong>8.</strong> 跳表</a></li><li><a href="./hash_table.html"><strong>9.</strong> 散列表</a></li><li><a href="./binary_tree.html"><strong>10.</strong> 二叉树</a></li><li><a href="./red_black_tree.html"><strong>11.</strong> 红黑树</a></li><li><a href="./heap.html"><strong>12.</strong> 堆和堆排序</a></li></ul>
         </div>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -1035,6 +1035,67 @@ func recursion(nums []int, left, right int, value int) int {
 </ol>
 <a class="header" href="print.html#必知必会-9" id="必知必会-9"><h2>必知必会</h2></a>
 <p>理解即可，至于为什么“<code>每个叶子节点都是黑色的空节点，也就是说叶子节点不存储数据</code>”能简化代码，参考代码实现。</p>
+<a class="header" href="print.html#堆" id="堆"><h1>堆</h1></a>
+<p>堆（heap）是一种特殊的树，它的应用场景很多，最经典的莫过于堆排序。堆排序是一种原地的、时间复杂度为<code>O(nlogn)</code>的排序算法。堆需要满足以下的条件：</p>
+<ul>
+<li>堆是一个完全二叉树</li>
+<li>堆中的每一个节点都必须大于等于（或小于等于）其子树中每个节点的值</li>
+</ul>
+<p>对于每个节点的值都大于等于子树中每个节点值得堆，我们叫做“大顶堆”。对于每个节点的值都小于等于子树中每个节点的堆叫做“小顶堆”。</p>
+<a class="header" href="print.html#如何实现一个堆" id="如何实现一个堆"><h2>如何实现一个堆</h2></a>
+<p>完全二叉树比较适合用数组来存储，这很节省存储空间。</p>
+<p><img src="picture/heap00.PNG" style="width:300px"/></p>
+<p>可以看到，数组中下标为<code>i</code>的节点的左子节点，就是下标为<code>i*2</code>的节点，右子节点就是下标为<code>i*2+1</code>的节点，父节点就是下标为<code>i/2</code>的节点。</p>
+<a class="header" href="print.html#往堆中插入一个元素" id="往堆中插入一个元素"><h3>往堆中插入一个元素</h3></a>
+<p>往堆中插入数据后需要重新堆化来使树满足堆的特性。堆化实际上有两种，从下往上和从上往下。这里介绍从下往上的堆化方法。</p>
+<p><img src="picture/heap01.PNG" style="width:600px"/></p>
+<p>让新插入的节点与父节点对比大小。如果不满足子节点小于等于父节点的大小关系，我们就互换两个节点。一直重复这个过程，直到父子节点之间满足堆的特性。</p>
+<a class="header" href="print.html#删除堆顶元素" id="删除堆顶元素"><h3>删除堆顶元素</h3></a>
+<p>通过堆的定义可知，堆顶的元素或是最大或是最小。删除堆顶之后需要把第二大的元素放到堆顶，而第二大元素肯定会出现在左右子节点中。然后再迭代删除第二大节点，以此类推直到叶子节点被删除。但这种情况会导致数组出现空位，即出现不存放数据的位置，如下图。</p>
+<p><img src="picture/heap02.PNG" style="width:600px"/></p>
+<p>可以把最后一个节点放到堆顶，利用同样的父子结点对比方法，对于不满足父子节点大小关系的，互换两个节点，并且重复进行这个过程，直到父子节点之间满足大小关系位置。这就是<strong>从上往下的堆化方法</strong>。因为操作过程中移除的是数组的最后一个元素，而在堆化过程中都是交换操作，数组中不会出现空位，所这种方法堆化之后的堆仍然满足完全二叉树的特性。</p>
+<p><img src="picture/heap03.PNG" style="width:600px"/></p>
+<p>对于一个包含n个节点的完全二叉树，树的高度不会超过$log_2n$。堆化的过程是顺着节点所在的路径比较交换的，所以堆化的时间复杂度跟树的高度成正比，也就是<code>O(logn)</code>。插入数据和删除堆顶元素的主要逻辑就是堆化，所以，往堆中插入元素和删除堆顶元素的时间复杂度都是<code>O(logn)</code>。</p>
+<a class="header" href="print.html#堆排序" id="堆排序"><h2>堆排序</h2></a>
+<p>堆排序是时间复杂度稳定为<code>O(nlogn)</code>的原地排序算法（它的交换次数比快排要多），其流程大致分为建堆和排序两个步骤。</p>
+<a class="header" href="print.html#建堆" id="建堆"><h3>建堆</h3></a>
+<ol>
+<li>
+<p>从下往上的建堆方法</p>
+<p>尽管数组中包含n个数据，但是我们可以假设，起初堆中只包含一个数据，就是下标为1的数据。然后插入下标2到n的元素从而形成一个堆。</p>
+</li>
+<li>
+<p>从上往下的建堆方法</p>
+<p>叶子节点往下堆化只能跟自己比较，所以直接从最后一个非叶子节点开始依次堆化即可。</p>
+</li>
+</ol>
+<p>第二种方法的建堆流程如图。</p>
+<p><img src="picture/heap04.PNG" style="width:600px"/></p>
+<a class="header" href="print.html#建堆的时间复杂度" id="建堆的时间复杂度"><h4>建堆的时间复杂度</h4></a>
+<p>因为叶子节点不需要堆化，所以需要堆化的节点从倒数第二层开始。每个节点堆化的过程中，需要比较和交换的节点个数跟节点高度成正比。如图，将每个节点的高度求和就是建堆的时间复杂度。</p>
+<p><img src="picture/heap05.PNG" style="width:500px"/></p>
+<p>对非叶子节点的高度求和，公式为</p>
+<p>$$
+S_1 = 1<em>h + 2^1</em>(h-1) + 2^2*(h-2) + 2^3*(h-3)+...+2^{h-1}*1
+$$</p>
+<p>简化得高度和为</p>
+<p>$$
+S = 2^{h+1}-h-2
+$$</p>
+<p>因为$h=log_2n$，带入后得到建堆的时间复杂度为<code>O(n)</code>。</p>
+<a class="header" href="print.html#排序-1" id="排序-1"><h3>排序</h3></a>
+<p>建堆结束后，数组中的数据已经是按照大顶堆的特性来组织的。数组中的第一个元素就是堆顶，也就是最大的元素。把堆顶元素后宿主最后一个元素交换，这时最大的元素就在下标为n的位置。</p>
+<p>然后在对除最后一个元素以外的数组做堆化，因为最大元素被换到了最后，剩余的部分破坏了堆的特性。重新堆化后的下标1到n-1的数组又是一个大顶堆，此时的堆顶就是整个数组的第二大元素，然后互换堆顶元素和n-1下标位置的元素，再重新堆化1到n-1的数组...直到堆中只剩下一个元素，排序完成。</p>
+<p><img src="picture/heap06.PNG" style="width:600px"/></p>
+<a class="header" href="print.html#堆排序性能分析" id="堆排序性能分析"><h3>堆排序性能分析</h3></a>
+<p>堆排序是原地排序算法，空间复杂度为<code>O(1)</code>。</p>
+<p>时间复杂度由两部分组成，建堆时间复杂度为<code>O(n)</code>，排序部分时间复杂度为<code>O(nlogn)</code>（需要做n次堆化）。因此总的时间复杂度为<code>O(nlogn)</code>。</p>
+<p>由于数据交换过程中会破坏数组原来的元素顺序，因此堆排序不是稳定的排序算法。</p>
+<a class="header" href="print.html#必知必会-10" id="必知必会-10"><h2>必知必会</h2></a>
+<p>实现一个小顶堆、大顶堆、优先级队列</p>
+<p>实现堆排序</p>
+<p>利用优先级队列合并K个有序数组</p>
+<p>求一组动态数据集合的前K大的元素</p>
 
                 </div>
 
