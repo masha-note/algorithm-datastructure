@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>图 - 算法与数据结构</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./array.html"><strong>1.</strong> 数组</a></li><li><a href="./linklist.html"><strong>2.</strong> 链表</a></li><li><a href="./stack.html"><strong>3.</strong> 栈</a></li><li><a href="./queue.html"><strong>4.</strong> 队列</a></li><li><a href="./recursion.html"><strong>5.</strong> 递归</a></li><li><a href="./sort.html"><strong>6.</strong> 排序</a></li><li><a href="./binary_search.html"><strong>7.</strong> 二分查找</a></li><li><a href="./skiplist.html"><strong>8.</strong> 跳表</a></li><li><a href="./hash_table.html"><strong>9.</strong> 散列表</a></li><li><a href="./binary_tree.html"><strong>10.</strong> 二叉树</a></li><li><a href="./red_black_tree.html"><strong>11.</strong> 红黑树</a></li><li><a href="./heap.html"><strong>12.</strong> 堆和堆排序</a></li><li><a href="./graph.html" class="active"><strong>13.</strong> 图</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title">算法与数据结构</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./graph.html#图" id="图"><h1>图</h1></a>
+<p>除了之前涉及到的树，图（Graph）也是非线性表数据结构。</p>
+<p>树中的元素叫节点，图中的元素称为顶点（vertex）。图中的顶点可与任意其他顶点建立连接关系，这种关系称为边（edge）。</p>
+<p><img src="picture/graph/graph00.PNG" style="width:300px"/></p>
+<p>跟某一顶点相连接的边的条数称为顶点的度（degree）。</p>
+<p>在图中引入方向后就变成了有向图。其中顶点入度（in-degree）表示由多少条边指向改顶点。顶点的出度（out-degree）表示由多少条边是以这个顶点为起点指向其他顶点。</p>
+<p><img src="picture/graph/graph01.PNG" style="width:300px"/></p>
+<p>如果给图中的度都加上权重（weight）就成了带权图（weighted graph）。</p>
+<p><img src="picture/graph/graph02.PNG" style="width:300px"/></p>
+<a class="header" href="./graph.html#邻接矩阵存储方法" id="邻接矩阵存储方法"><h2>邻接矩阵存储方法</h2></a>
+<p>图最直观的存储方法就是邻接矩阵（Adjacency Matrix）。这种方法底层依赖一个二维数组。</p>
+<p>对于无向图，如果顶点 i 和顶点 j 之间有边，就将<code>A[i][j]</code>标记为 1；对于无向图如果顶点 i 有边指向顶点 j 才将<code>A[i][j]</code>标记为 1，如果由 j 指向 i 则将<code>A[j][i]</code>标记为 1。</p>
+<p><img src="picture/graph/graph03.PNG" style="width:500px"/></p>
+<p>对于无向图来说，邻接矩阵存储会比较浪费空间，因为<code>A[i][j]</code>和<code>A[j][i]</code>表示的同一个度，这就浪费了一半的数组空间。相对的，邻接矩阵存储方法简单、直接，在获取两个顶点的关系时非常高效还方便计算。</p>
+<a class="header" href="./graph.html#邻接表存储方法" id="邻接表存储方法"><h2>邻接表存储方法</h2></a>
+<p>相比于邻接矩阵，邻接表的存储方法空间利用率会更高。邻接表类似散列表，每个顶点对应一条链表，链表中存储的是与这个顶点相连接的其他顶点。</p>
+<p><img src="picture/graph/graph04.PNG" style="width:500px"/></p>
+<p>邻接表中查询两个顶点的关系不像邻接矩阵那么高效，需要遍历链表。和散列表一样，邻接表中的链表也可以用跳表或者红黑树优化。</p>
+<a class="header" href="./graph.html#搜索算法" id="搜索算法"><h2>搜索算法</h2></a>
+<p>图中的搜索算法可以理解为从其中一个顶点出发到顶一个顶点的路径。具体方法由很多，比如最简单的深度优先、广度优先搜索，还有<code>A*</code>，<code>IDA*</code>等启发式搜索算法。</p>
+<a class="header" href="./graph.html#广度优先搜索bfs" id="广度优先搜索bfs"><h3>广度优先搜索（BFS）</h3></a>
+<p>广度优先搜索（Breadth-First-Search）是一种层层推进的搜索策略，即先查找离起始顶点最近的，然后是次近的，依次往外搜索。</p>
+<p><img src="picture/graph/graph05.PNG" style="width:500px"/></p>
+<p>代码实现如下：</p>
+<pre><code class="language-Golang">
+</code></pre>
+<p>其中队列用来存储即将遍历的下一层顶点，一个数组用来存储已经入队过的顶点，一个数组用来存储当前遍历路径下某个顶点的前一个顶点。</p>
+<p>由于广度优先是按层遍历的。队列的使用可以确保在遍历完一层之后才开始遍历下一层。<em>存储已经入队过的顶点</em>的数组是为了防止节点重复遍历导致死循环。<em>存储当前遍历路径下某个顶点的前一个顶点</em>的数组是为了保存当前的路径（一般 bfs 的结果就是最短路径）。</p>
+<a class="header" href="./graph.html#性能分析" id="性能分析"><h4>性能分析</h4></a>
+<p>最坏情况下，终止顶点离起始顶点很远需要遍历完整个图才能找到。这是每个顶点都要进出一遍队列，每个便也都会被访问一次，所以时间复杂度为<code>O(E+V)</code>，其中 E 表示边的个数，V 表示顶点个数。</p>
+<p>广度优先搜索算法的空间消耗主要在辅助变量上，这些变量的大小都不会超过顶点的个数，空间复杂度是<code>O(V)</code>。</p>
+<a class="header" href="./graph.html#深度优先搜索dfs" id="深度优先搜索dfs"><h3>深度优先搜索（DFS）</h3></a>
+<p>深度优先搜索（Depth-First-Search）用的是回溯思想。这种思想解决问题的过程，非常适合用递归来实现。具体细节参考<a href="./graph.html#%E5%9B%BE">回溯思想——暂时还没写好</a></p>
+<p><img src="picture/graph/graph07.PNG" style="width:500px"/></p>
+<a class="header" href="./graph.html#性能分析-1" id="性能分析-1"><h4>性能分析</h4></a>
+<p>由上面的流程图可以看出，每条边最多会被访问两遍，一次是遍历，一次是回溯。所以，图上的深度优先搜索算法的时间复杂度是<code>O(E)</code>，E 表示边的个数。</p>
+<p>深度优先搜索算法的消耗内存主要是数组和递归调用栈。数组的大小跟顶点的个数 V 成正比，递归调用站的最大深度不会超过顶点的个数，所以总的空间复杂度就是<code>O(V)</code>。</p>
+<a class="header" href="./graph.html#必知必会" id="必知必会"><h2>必知必会</h2></a>
+<p>实现有向图、无向图、有权图、无权图的邻接矩阵和邻接表表示方法</p>
+<p>实现图的深度优先搜索、广度优先搜索</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a rel="prev" href="./heap.html" class="mobile-nav-chapters previous" title="Previous chapter">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+
+            </div>
+
+            
+                <a href="./heap.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>
